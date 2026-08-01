@@ -1,0 +1,155 @@
+<title>דף עזר לבחינה — יישומי בינה מלאכותית בניהול</title>
+<style>
+:root{--ink:#111;--accent:#0f5c66;--warm:#9a5b12;--line:#c9cdc9;--soft:#f0f2ef}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{direction:rtl;margin:0;color:var(--ink);background:#fff;
+  font-family:"Segoe UI","Assistant",system-ui,Arial,sans-serif;font-size:10pt;line-height:1.34}
+.sheet{max-width:1000px;margin:0 auto;padding:14px 18px}
+.top{display:flex;align-items:flex-end;justify-content:space-between;border-bottom:2.5px solid var(--accent);padding-bottom:6px;margin-bottom:8px}
+.top h1{font-size:15pt;margin:0;letter-spacing:-.01em}
+.top .meta{font-size:8.5pt;color:#555;text-align:left}
+.print-hint{background:var(--soft);border:1px solid var(--line);border-radius:7px;padding:7px 11px;font-size:9pt;margin-bottom:10px}
+.cols{column-count:2;column-gap:16px}
+@media(max-width:720px){.cols{column-count:1}}
+.blk{break-inside:avoid;margin:0 0 9px;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+.blk h2{font-size:9.5pt;margin:0;padding:4px 8px;background:var(--accent);color:#fff;letter-spacing:.01em}
+.blk .body{padding:5px 8px}
+.blk ul{margin:0;padding-inline-start:15px}
+.blk li{margin:2px 0}
+b{color:var(--accent)}
+.k{color:var(--warm);font-weight:700}
+code,.m{font-family:ui-monospace,Consolas,monospace;font-size:8.7pt;background:var(--soft);padding:0 3px;border-radius:3px}
+.full{break-inside:avoid;margin:12px 0 0}
+h3.sec{font-size:11pt;color:var(--accent);border-bottom:1.5px solid var(--accent);padding-bottom:2px;margin:4px 0 7px}
+table{width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:8px;break-inside:avoid}
+th,td{border:1px solid var(--line);padding:3px 6px;text-align:right;vertical-align:top}
+th{background:var(--soft);font-size:8.7pt}
+.grid2{column-count:2;column-gap:16px}
+.tag{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:8.5pt;margin:1px}
+@media print{
+  @page{size:A4;margin:9mm}
+  body{font-size:9pt}
+  .print-hint{display:none}
+  .top{border-bottom-width:2pt}
+  .blk,.blk h2{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a{color:var(--ink);text-decoration:none}
+}
+</style>
+<div class="sheet">
+  <div class="top">
+    <h1>⚡ דף עזר לבחינה — יישומי בינה מלאכותית בניהול</h1>
+    <div class="meta">865591903 · ד"ר יורם סגל<br>בחינה פתוחה · הרצאות 01–11</div>
+  </div>
+  <div class="print-hint">🖨️ <b>להדפסה:</b> Ctrl+P (או ⌘P) ← יעד: "שמירה כ-PDF" ← שוליים: מינימום ← הפעל "גרפיקת רקע" לצבעים. יוצא כ-2–3 עמודי A4.</div>
+
+  <div class="cols">
+    <div class="blk"><h2>01 · AI כווקטורים ולמידת מכונה</h2><div class="body"><ul>
+      <li><b>ייצוג וקטורי</b>: כל תכונה=ממד. תמונה 1000×1000=וקטור ב-<span class="k">מיליון</span> מימדים. דומים=<b>קרובים</b>. "למידה"=מציאת <b>הגבול המפריד</b>.</li>
+      <li><b>4 סוגי ML</b>: <span class="k">רגרסיה</span>=ערך רציף (מחיר/ביקוש) · <span class="k">סיווג</span>=קטגוריות בדידות · <span class="k">חריגות</span>=נדיר (הונאה) · <span class="k">חיזוק (RL)</span>=תגמול (שחמט).</li>
+      <li><b>Overfitting</b>=למד "בעל פה". <b>Feature</b>=תכונה נמדדת. <b>Deep Learning</b>=רשת נוירונים.</li>
+      <li>סיכון LLM ענן: מידע "יוצא החוצה" (man-in-the-middle).</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>03 · טרמינל ו-Codex</h2><div class="body"><ul>
+      <li><b>Codex</b>=CLI של OpenAI. סוכן=טקסט בלבד (לא עכבר). פרויקט=<b>תיקייה</b>.</li>
+      <li><span class="m">mkdir</span>=תיקייה · <span class="m">python file.py</span>=הרצה · Windows מפריד=<span class="m">\</span></li>
+      <li><b>סדר התקנה</b>: PowerShell→Node/npm→הרשאה→Codex→התחברות. אחרי Node → <b>לסגור/לפתוח טרמינל</b>.</li>
+      <li><span class="m">npm i -g @openai/codex</span> · <span class="m">codex login</span>=<b>OAuth 2.0</b>.</li>
+      <li><span class="m">/exit</span>=יוצא מ-Codex · <span class="m">exit</span>=סוגר טרמינל.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>04 · כלכלת ה-AI</h2><div class="body"><ul>
+      <li>מחיר מידע: <b>P→MC→0</b> (עלות שולית אפסית). המטבע החדש=<b>הקשב (Attention)</b>.</li>
+      <li><b>Jagged Frontier</b>=גבול יכולת לא-אחיד. <b>Noy&amp;Zhang</b>: <span class="k">−40%</span> זמן, <span class="k">+18%</span> איכות.</li>
+      <li><b>דחיסת פריון</b>=החלשים נהנים הכי הרבה. פתרון סגל=<b>מס על סוכני AI</b>.</li>
+      <li><b>מגן הסיליקון</b>=TSMC (<span class="k">90%+</span> שבבים). <b>ההשטחה</b>: טווח שליטה <span class="k">8.1→12.1</span>.</li>
+      <li>סוציאליזם=כשל <b>אפיסטמי</b> (אין חישוב ללא שוק). תלות נשקית=צווארי בקבוק ככפייה.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>05 · Vibe Coding</h2><div class="body"><ul>
+      <li>=כתיבת קוד ב<b>שפה טבעית</b>. מתארים "מה", ה-LLM כותב "איך".</li>
+      <li><b>4 שלבים</b>: <span class="k">הגדרת משימה→יצירת קוד→שמירה→הרצה</span>.</li>
+      <li>פייתון=<b>המנוע</b>. שעון=ספריית <b>Turtle</b>. קובץ=<span class="m">.py</span> בלי רווחים. טעה→"כועסים עליו".</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>06 · שרשרת אספקה (תאוריה)</h2><div class="body"><ul>
+      <li><b>שיחה</b>=שאלה-תשובה · <b>סוכן</b>=מטרה→תת-משימות→כלים. אין לסמוך על חשבון LLM. <b>הזיה</b>=המצאת "הכי הגיוני".</li>
+      <li>2 שלבי מודל: <b>אימון</b>+<b>הסקה</b>. תאריך תוקף=היום שאומן עד אליו. כלכלה חיובית=<b>אדם בלולאה</b>.</li>
+      <li><b>Claude</b>=אלוף קוד · <b>Nano Banana</b>=תמונות · <b>Ollama</b>=מקומי (אין טוקנים). כלל 4: לבקש "חריגות"+ביקורתי.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>07 · תרגול שרשרת אספקה</h2><div class="body"><ul>
+      <li><b>סשן חדש לכל משימה</b>. קבצים מיותרים→שיקול דעת. מסמך מפתח=<b>מדיניות עיכובים</b>.</li>
+      <li><b>אפקט השרשרת</b>=עיכוב פוגע במשלוחים "בקנה". אחריות+אימות=על <b>הלומד</b>. שקף=רקע בלבד (לא לצרף).</li>
+      <li><b>Incoterms</b>=תנאי סחר בינ"ל. הגשה=פרטי בצ'אט Zoom.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>08 · Skills וחלון הקשר</h2><div class="body"><ul>
+      <li>קשב=<b>O(N²)</b>. <b>Lost in Middle</b>=דיוק בקצוות (Primacy+Recency).</li>
+      <li>טוקנים: אנגלית ≈<span class="k">1.3</span> / עברית ≈<span class="k">3.25</span> (×2.5, בגלל <b>BPE</b>). מס הטוקנים=<b>4</b> (פיננסי/חישובי/קיבולת/דיוק).</li>
+      <li><span class="m">/clear</span>=מאפס · <span class="m">/compact</span>=דוחס. <b>4 מרכיבי סוכן</b>: LLM·חלון הקשר·כלים·RAG.</li>
+      <li><b>GraphRAG</b>=חוסך עד <span class="k">90%</span> טוקנים. מומלץ <b>אוגמנטציה</b> (טייס משנה).</li>
+      <li><b>Progressive Disclosure</b>=3 רמות (מטא→הנחיות→משאבים). חלון: <span class="k">200K→מיליון</span>.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>09 · Git, GitHub, Gmail API</h2><div class="body"><ul>
+      <li><b>Client</b>=תקשורת · <b>Token</b>=הרשאות. לא מילת-מפתח בודדת (Rule-based)→זיהוי <b>כוונה</b>.</li>
+      <li><b>4 תפקידי OAuth</b>: Resource Owner·Client·Auth Server·Resource Server.</li>
+      <li><b>144 commits</b>=מקצועי · אחד=לא. מחזור=<span class="k">PRD→Plan→To-Do</span>. README=מה+איך מריצים.</li>
+      <li><b>Push</b>=מחשב→ענן · <b>Pull</b>=ענן→מחשב. Git: <b>Torvalds, 2005</b>.</li>
+      <li><b>Moat=VRIN</b>: Valuable·Rare·Inimitable·Non-substitutable. דילול=ויתור % בכל סבב (~3–5%).</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>10 · מולטימדיה</h2><div class="body"><ul>
+      <li><span class="m">.mp4</span>=<b>מיכל (Container)</b>. "השמע מוביל"=ערוץ שמע קובע קצב. הפקה "לא שותה טוקנים"=רק <b>מתזמר</b>.</li>
+      <li>CLI מקומי מריץ <b>FFmpeg</b>; דפדפן רק כותב. מיומנות עוטפת FFmpeg=Python→פקודה. ~<span class="k">90%</span> קטעים להשתיק.</li>
+      <li><b>MCP</b>=תקן פתוח לכלים חיצוניים. <b>Agentic OS</b>=מעבר לממוקד-<b>כוונה</b>.</li>
+    </ul></div></div>
+
+    <div class="blk"><h2>11 · מצגות HTML בסוכן AI</h2><div class="body"><ul>
+      <li><b>מחסום הכלי</b>→הופך: מתארים <b>כוונה בשפה טבעית</b> והסוכן בונה.</li>
+      <li><b>Full-Stack</b>=Front-end (רואים) + Back-end (שרת). <b>מבחן ניתוק הכבל</b>: נעצר=שרת · ממשיך=מקומי. מצגת HTML=<b>מקומי</b>.</li>
+      <li>מצגת=<b>אתר מקומי</b>. דפדפן=נגן. שקופית=<b>דף HTML</b>. <span class="m">index.html</span>=דף נחיתה. שיתוף=<b>כל התיקייה</b>.</li>
+      <li><b>Pipeline</b>: <span class="k">תסריט(צ'אט)→AI.txt→סוכן CLI מייצר HTML→לחיצה כפולה index.html</span>. תסריט <b>ולא</b> שקופיות. הדרגתי.</li>
+      <li>סוגים: <b>אובייקטים</b> (טכני/קר) · <b>תמונות</b> (חגיגי). <b>JSON</b>=גשר לשאיבת סגנון (כמו Suno).</li>
+      <li><b>3 שכבות</b>: HTML(מבנה)·CSS(עיצוב)·JS(התנהגות)=<b>הפרדת דאגות</b>. <span class="m">.js</span>≠Java. <b>BiDi</b>=כיווניות (UAX #9).</li>
+      <li>פס-קול=<b>FFmpeg</b> (חיבור L10). <b>תיאום רב-סוכני</b>: תסריטאי+מקודד→שליט/חוזר. מגבלות: הזיות(אדם בלולאה)·נגישות(WCAG)·אבטחה. חלופות: reveal.js/Marp.</li>
+    </ul></div></div>
+  </div>
+
+  <div class="full">
+    <h3 class="sec">⚡ שליפה מהירה</h3>
+    <div class="grid2">
+      <table><tr><th>שאלת "הסדר הנכון"</th><th>הסדר</th></tr>
+        <tr><td>Vibe Coding</td><td>משימה→קוד→שמירה→הרצה</td></tr>
+        <tr><td>מחזור פיתוח</td><td>PRD→Plan→To-Do</td></tr>
+        <tr><td>Pipeline מצגת HTML</td><td>תסריט→AI.txt→CLI/HTML→index.html</td></tr>
+        <tr><td>התקנת Codex</td><td>PowerShell→Node/npm→הרשאה→Codex→התחברות</td></tr>
+      </table>
+      <table><tr><th>רשימה</th><th>הרכיבים</th></tr>
+        <tr><td>4 מרכיבי סוכן</td><td>LLM · חלון הקשר · כלים · RAG</td></tr>
+        <tr><td>RL</td><td>מצב · פעולה · תגמול · מדיניות</td></tr>
+        <tr><td>OAuth 2.0</td><td>Owner · Client · Auth-Server · Resource-Server</td></tr>
+        <tr><td>VRIN</td><td>Valuable · Rare · Inimitable · Non-subst.</td></tr>
+        <tr><td>3 שכבות רשת</td><td>HTML · CSS · JS</td></tr>
+      </table>
+      <table><tr><th>מספר</th><th>ערך</th></tr>
+        <tr><td>סיבוכיות קשב</td><td>O(N²)</td></tr>
+        <tr><td>טוקנים אנגלית/עברית</td><td>1.3 / 3.25 (×2.5)</td></tr>
+        <tr><td>חלון הקשר</td><td>200K → מיליון</td></tr>
+        <tr><td>GraphRAG חיסכון</td><td>עד 90%</td></tr>
+        <tr><td>Noy &amp; Zhang</td><td>−40% זמן, +18% איכות</td></tr>
+        <tr><td>טווח שליטה</td><td>8.1 → 12.1</td></tr>
+      </table>
+      <table><tr><th>הבחנות מבלבלות</th><th></th></tr>
+        <tr><td>רגרסיה↔סיווג↔חריגות↔חיזוק</td><td>רציף/בדיד/נדיר/תגמול</td></tr>
+        <tr><td><span class="m">/clear</span> ↔ <span class="m">/compact</span></td><td>מאפס / דוחס</td></tr>
+        <tr><td>Push ↔ Pull</td><td>→ענן / →מחשב</td></tr>
+        <tr><td>Front ↔ Back-end</td><td>רואים / שרת</td></tr>
+        <tr><td>אובייקטים ↔ תמונות</td><td>טכני / חגיגי</td></tr>
+      </table>
+    </div>
+    <table><tr><td style="text-align:center;background:var(--soft)"><b>עקרון-על:</b> AI = כלי רב-עוצמה שמצריך <b>"אדם בלולאה"</b>, אימות וערך מוסף אנושי · לעולם לא להעביר תוצר כמו-שהוא</td></tr></table>
+  </div>
+</div>
