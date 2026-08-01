@@ -1,0 +1,29 @@
+# --- פרויקט הסוכן (repo נפרד + סודות) — לא לעלות ---
+gmail-calendar-agent/
+aaa/
+תרגיל/
+.claude/
+
+# --- סביבות ותלויות ---
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# --- חומרי מקור של המרצה (זכויות יוצרים + קבצים כבדים) ---
+*.pdf
+*.pptx
+*.png
+
+# --- סודות ---
+.env
+*.env
+client_secret*.json
+token*.json
+credentials*.json
+*token*.pickle
+
+# --- מערכת ---
+.DS_Store
+Thumbs.db
+desktop.ini

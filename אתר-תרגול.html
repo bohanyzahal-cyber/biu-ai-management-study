@@ -1,0 +1,488 @@
+<title>תרגול — יישומי בינה מלאכותית בניהול</title>
+<style>
+:root{
+  --bg:#F3F4F1; --surface:#FCFCFA; --surface-2:#ECEFE9; --ink:#191C1F; --muted:#5B6470;
+  --border:#E1E3DD; --accent:#17646E; --accent-strong:#0F4E57; --warm:#C67F2C;
+  --good:#2E9E52; --bad:#CE4141; --good-bg:#E7F4EC; --bad-bg:#FaeAeA; --ring:#17646E;
+  --shadow:0 1px 2px rgba(20,30,30,.05),0 8px 24px -12px rgba(20,40,45,.18);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#13161A; --surface:#1B2025; --surface-2:#242B32; --ink:#E8EBE8; --muted:#96A0AB;
+    --border:#2D343C; --accent:#45AAB4; --accent-strong:#67C3CC; --warm:#D79A4A;
+    --good:#46C46E; --bad:#EE6F6B; --good-bg:#16302292; --bad-bg:#3a1e1e8a; --ring:#45AAB4;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F3F4F1; --surface:#FCFCFA; --surface-2:#ECEFE9; --ink:#191C1F; --muted:#5B6470;
+  --border:#E1E3DD; --accent:#17646E; --accent-strong:#0F4E57; --warm:#C67F2C;
+  --good:#2E9E52; --bad:#CE4141; --good-bg:#E7F4EC; --bad-bg:#FaeAeA; --ring:#17646E;
+  --shadow:0 1px 2px rgba(20,30,30,.05),0 8px 24px -12px rgba(20,40,45,.18);
+}
+:root[data-theme="dark"]{
+  --bg:#13161A; --surface:#1B2025; --surface-2:#242B32; --ink:#E8EBE8; --muted:#96A0AB;
+  --border:#2D343C; --accent:#45AAB4; --accent-strong:#67C3CC; --warm:#D79A4A;
+  --good:#46C46E; --bad:#EE6F6B; --good-bg:#163022; --bad-bg:#3a1e1e; --ring:#45AAB4;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{
+  margin:0;background:var(--bg);color:var(--ink);direction:rtl;
+  font-family:"Segoe UI","Assistant",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.mono{font-family:ui-monospace,"SFMono-Regular","Consolas","Menlo",monospace;font-size:.9em}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--ring);outline-offset:2px;border-radius:6px}
+
+/* header */
+header{border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--surface) 88%,transparent);position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.4) blur(8px)}
+.hbar{display:flex;align-items:center;gap:14px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;letter-spacing:-.01em}
+.glyph{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:linear-gradient(150deg,var(--accent),var(--accent-strong));display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.brand small{display:block;font-weight:500;color:var(--muted);font-size:12.5px;letter-spacing:.02em}
+.spacer{flex:1}
+.tbtn{background:var(--surface-2);border:1px solid var(--border);color:var(--ink);border-radius:9px;padding:8px 11px;font-size:14px;display:inline-flex;align-items:center;gap:7px;transition:transform .12s}
+.tbtn:hover{transform:translateY(-1px)}
+
+/* hero */
+.hero{padding:38px 0 8px}
+.eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 10px}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.1;margin:0 0 12px;letter-spacing:-.02em;text-wrap:balance;font-weight:800}
+.lede{color:var(--muted);font-size:18px;max-width:60ch;margin:0}
+.stats{display:flex;gap:26px;margin:24px 0 6px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat b{font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+
+/* section head */
+.sec{margin:40px 0 16px;display:flex;align-items:baseline;gap:12px}
+.sec h2{font-size:20px;margin:0;letter-spacing:-.01em}
+.sec .rule{flex:1;height:1px;background:var(--border)}
+
+/* topic grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 16px 14px;text-align:right;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .14s,box-shadow .14s,border-color .14s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
+.card .tag{font-size:11.5px;font-weight:700;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+.card h3{margin:0;font-size:16px;line-height:1.3;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.card .foot{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:12.5px;color:var(--muted)}
+.chip{font-variant-numeric:tabular-nums;background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:2px 9px;font-weight:600;font-size:12px}
+.chip.done{color:var(--good);border-color:color-mix(in srgb,var(--good) 40%,var(--border))}
+.card.special{background:linear-gradient(160deg,color-mix(in srgb,var(--accent) 12%,var(--surface)),var(--surface))}
+.card.special .tag{color:var(--warm)}
+
+/* materials */
+.mat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:6px 4px}
+.mrow{display:flex;align-items:center;gap:13px;padding:13px 15px;border-bottom:1px solid var(--border)}
+.mrow:last-child{border-bottom:0}
+.mrow .ic{width:32px;height:32px;flex:0 0 auto;border-radius:8px;background:var(--surface-2);display:grid;place-items:center;font-size:16px}
+.mrow .txt{flex:1;min-width:0}
+.mrow .txt b{font-weight:650;font-size:15px}
+.mrow .txt span{display:block;color:var(--muted);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mrow .go{font-size:13px;color:var(--accent);white-space:nowrap}
+.note{color:var(--muted);font-size:13px;padding:11px 15px}
+
+/* quiz */
+.quiz{display:none;padding:26px 0 60px}
+.quiz.active{display:block}
+.qtop{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.back{background:none;border:0;color:var(--muted);font-size:14px;padding:6px;margin-inline-start:-6px}
+.back:hover{color:var(--ink)}
+.qmeta{margin-inline-start:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pbar{height:6px;background:var(--surface-2);border-radius:99px;overflow:hidden;margin-bottom:22px}
+.pfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-strong));border-radius:99px;transition:width .4s cubic-bezier(.4,0,.1,1)}
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 22px;box-shadow:var(--shadow)}
+.qnum{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+.qtext{font-size:20px;font-weight:650;line-height:1.45;margin:0 0 20px;text-wrap:pretty}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:12px;text-align:right;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;font-size:16px;line-height:1.45;color:var(--ink);transition:border-color .12s,background .12s,transform .08s;width:100%}
+.opt:hover:not(:disabled){border-color:color-mix(in srgb,var(--accent) 55%,var(--border));background:color-mix(in srgb,var(--accent) 5%,var(--surface))}
+.opt:active:not(:disabled){transform:scale(.994)}
+.opt .letter{flex:0 0 auto;width:26px;height:26px;border-radius:7px;background:var(--surface-2);border:1px solid var(--border);display:grid;place-items:center;font-size:13.5px;font-weight:700;color:var(--muted)}
+.opt.correct{border-color:var(--good);background:var(--good-bg)}
+.opt.correct .letter{background:var(--good);border-color:var(--good);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt.wrong .letter{background:var(--bad);border-color:var(--bad);color:#fff}
+.opt:disabled{cursor:default}
+.opt.dim{opacity:.55}
+.expl{margin-top:16px;border-inline-start:3px solid var(--accent);background:var(--surface-2);border-radius:8px;padding:12px 14px;font-size:14.5px;color:var(--ink);display:none}
+.expl.show{display:block;animation:fade .25s ease}
+.expl b{color:var(--accent)}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:12px}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:11px;padding:12px 22px;font-size:15.5px;font-weight:650;transition:transform .12s,background .15s;box-shadow:var(--shadow)}
+.btn:hover{transform:translateY(-1px);background:var(--accent-strong)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
+.btn.ghost{background:var(--surface-2);color:var(--ink);border:1px solid var(--border);box-shadow:none}
+.livescore{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.livescore b{color:var(--good)}
+
+/* results */
+.res{text-align:center;padding:14px 0}
+.ring{--p:0;width:150px;height:150px;margin:6px auto 4px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--surface-2) 0)}
+.ring .inner{width:120px;height:120px;border-radius:50%;background:var(--surface);display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--border)}
+.ring .pct{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ring .pct small{font-size:15px;font-weight:600;color:var(--muted)}
+.res h2{margin:14px 0 4px;font-size:24px}
+.res .sub{color:var(--muted);margin:0 0 20px}
+.breakdown{text-align:right;max-width:520px;margin:0 auto 22px;display:flex;flex-direction:column;gap:9px}
+.brow{display:flex;align-items:center;gap:12px;font-size:14px}
+.brow .bn{flex:1;color:var(--muted)}
+.brow .bt{width:130px;height:7px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.brow .bt i{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.brow .bv{width:52px;text-align:left;font-variant-numeric:tabular-nums;font-weight:600}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+footer{border-top:1px solid var(--border);margin-top:50px;padding:22px 0 40px;color:var(--muted);font-size:13px;text-align:center}
+.hide{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:520px){body{font-size:16px}.qcard{padding:20px 16px}.qtext{font-size:18px}}
+</style>
+
+<header>
+  <div class="wrap hbar">
+    <div class="brand">
+      <span class="glyph">א</span>
+      <span>תרגול לבחינה<small>יישומי בינה מלאכותית בניהול · 865591903</small></span>
+    </div>
+    <span class="spacer"></span>
+    <button class="tbtn" id="themeBtn" aria-label="החלפת ערכת צבעים">🌗 ערכה</button>
+  </div>
+</header>
+
+<main id="home" class="wrap">
+  <section class="hero">
+    <p class="eyebrow">בחינה אמריקאית · חומר פתוח</p>
+    <h1>תרגול חכם לכל נושאי הקורס</h1>
+    <p class="lede">בנק שאלות מסיכומי ההרצאות 01–11. בחר נושא, ענה, וקבל משוב מיידי עם הסבר. סדר התשובות מתערבב בכל ניסיון — לומדים לפי תוכן, לא לפי מיקום.</p>
+    <div class="stats">
+      <div class="stat"><b id="stTotal">0</b><span>שאלות תרגול</span></div>
+      <div class="stat"><b>11</b><span>הרצאות</span></div>
+      <div class="stat"><b id="stTopics">0</b><span>נושאים לתרגול</span></div>
+    </div>
+  </section>
+
+  <div class="sec"><h2>נושאי תרגול</h2><span class="rule"></span></div>
+  <div class="grid" id="topicGrid"></div>
+
+  <div class="sec"><h2>חומרי הקורס</h2><span class="rule"></span></div>
+  <div class="mat">
+    <a class="mrow" href="https://lemida.biu.ac.il/course/view.php?id=110617" target="_blank" rel="noopener">
+      <span class="ic">📚</span><span class="txt"><b>עמוד הקורס ב-Moodle</b><span>כל הסיכומים, המצגות וההקלטות של ההרצאות 01–11</span></span><span class="go">פתיחה ↗</span>
+    </a>
+    <a class="mrow" href="https://lemida.biu.ac.il/mod/url/view.php?id=3146591" target="_blank" rel="noopener">
+      <span class="ic">🎬</span><span class="txt"><b>הקלטת הרצאה 11 — מצגות HTML + הסבר על הבחינה</b><span>הקלטת הזום של ההרצאה האחרונה (כולל הסבר המרצה על הבחינה)</span></span><span class="go">צפייה ↗</span>
+    </a>
+    <div class="note">💡 בהמשך יתווסף כאן סיכום הקורס המלא. אפשר להוסיף נושאים ושאלות בקלות — הנתונים מרוכזים בבלוק אחד בקוד המקור.</div>
+  </div>
+
+  <div class="sec"><h2>איך משתמשים</h2><span class="rule"></span></div>
+  <div class="mat">
+    <div class="mrow"><span class="ic">①</span><span class="txt"><b>בחר נושא</b><span>הרצאה בודדת, סימולציית מבחן (50 אקראי), או כל השאלות</span></span></div>
+    <div class="mrow"><span class="ic">②</span><span class="txt"><b>ענה וקבל משוב מיד</b><span>התשובה הנכונה מודגשת בירוק, וההסבר נפתח מתחת</span></span></div>
+    <div class="mrow"><span class="ic">③</span><span class="txt"><b>בדוק את הציון והחולשות</b><span>פירוט לפי נושא + הציון הטוב ביותר נשמר במכשיר שלך</span></span></div>
+  </div>
+</main>
+
+<section id="quiz" class="quiz wrap">
+  <div class="qtop">
+    <button class="back" id="backBtn">← חזרה לנושאים</button>
+    <span class="qmeta" id="qMeta"></span>
+  </div>
+  <div class="pbar"><div class="pfill" id="pfill"></div></div>
+  <div id="stage"></div>
+</section>
+
+<footer class="wrap">
+  נבנה ככלי עזר ללימוד עצמי · השאלות מבוססות על סיכומי ההרצאות של ד"ר יורם סגל · אינו חומר בחינה רשמי · הציונים נשמרים מקומית בדפדפן שלך
+</footer>
+
+<script>
+/* ---------- data: @id|name|short  then  Q|question|o0|o1|o2|o3|correctIdx|explanation? ---------- */
+const RAW = `
+@l01|הרצאה 01 · AI כווקטורים|למידת מכונה ומרחב וקטורי
+Q|תמונת 1000×1000 פיקסלים מיוצגת ב-AI כ...?|מטריצה דו-ממדית בלבד|וקטור במיליון מימדים|סקלר יחיד|גרף קשרים|1|כל פיקסל = ממד; מיליון פיקסלים = וקטור במיליון מימדים.
+Q|מהי ההגדרה של "למידת מכונה" (Machine Learning)?|תכנות ידני של כללים|היכולת ללמוד מנתונים קיימים ולהסיק על נתונים לא-ידועים|אחסון מידע בענן|הצפנת נתונים|1|
+Q|איזה תחום ML עוסק ב"סיווג לקטגוריות מוגדרות" כמו חתול/כלב?|רגרסיה|קלסיפיקציה (סיווג)|למידת חיזוקים|גילוי אנומליות|1|
+Q|תחזית מחיר מניה על בסיס נתונים היסטוריים שייכת ל...?|קלסיפיקציה|גילוי אנומליות|רגרסיה|Deep Learning|2|רגרסיה = חיזוי ערך מספרי רציף.
+Q|במרחב וקטורי, שני משפטים בעלי משמעות דומה יהיו...?|רחוקים זה מזה|קרובים זה לזה|מאונכים|ללא קשר|1|
+Q|מהו "Overfitting"?|מודל שלמד את החומר לעומק|מודל שלמד "בעל פה" ומצליח רק בשאלות זהות|מודל מהיר מדי|מודל עם יותר מדי נתונים|1|
+Q|מהי "למידה עמוקה" (Deep Learning)?|למידה איטית|תת-תחום של ML המבוסס על רשת נוירונים מלאכותית|אחסון עמוק בדיסק|הצפנה כפולה|1|
+Q|במושגי Data — מהו "פיצ'ר" (Feature)?|התיוג של הדגימה|שורה בודדת ב-Data Set|תכונה בודדת נמדדת|כל מסד הנתונים|2|
+Q|ניהול רחפן תוך כדי תנועה, או שחמט, הם דוגמאות ל...?|רגרסיה|קלסיפיקציה|למידת חיזוקים (Reinforcement Learning)|גילוי אנומליות|2|
+Q|מהו סיכון אבטחת המידע בשליחת שאלה ל-LLM בענן?|המודל איטי|המידע "יוצא החוצה" וחשוף ל-man-in-the-middle|עלות גבוהה|אין סיכון|1|
+@l03|הרצאה 03 · טרמינל ו-Codex|שורת פקודה, התקנה ו-CLI
+Q|מהו הכלי (CLI) של OpenAI בו משתמשים בשיעור?|Gemini CLI|Claude Code|Codex|Copilot CLI|2|
+Q|מדוע סוכן AI חייב לעבוד דרך הטרמינל?|הטרמינל מהיר יותר|הסוכן יודע רק לקרוא ולכתוב טקסט, לא להפעיל עכבר|הטרמינל צובע בירוק|אין ממשק גרפי ב-Windows|1|
+Q|איזו פקודה יוצרת תיקייה חדשה?|cd|mkdir|dir|cls|1|
+Q|מה חובה לעשות מיד אחרי התקנת Node.js לפני node -v?|לאתחל את המחשב|להתקין Python|לסגור ולפתוח מחדש את הטרמינל|למחוק את הפרויקט|2|הטרמינל צריך לטעון מחדש את משתני הסביבה.
+Q|מהי הפקודה להתקנה גלובלית של Codex?|codex install|npm install -g @openai/codex|node install codex|npm get codex|1|
+Q|מהו npm?|עורך טקסט|מערכת הפעלה|מנהל חבילות ("תוכנה שמתקינה תוכנות") המגיע עם Node.js|דפדפן|2|
+Q|באיזה פרוטוקול אימות משתמש codex login?|FTP|SSH|OAuth 2.0|HTTP Basic|2|
+Q|ההבדל בין /exit ל-exit?|שתיהן סוגרות את המחשב|/exit יוצא מ-Codex ונשאר בטרמינל, exit סוגר את הטרמינל|/exit מוחק פרויקט|אין הבדל|1|
+Q|ב-Windows, איזה סימן מפריד בנתיבי תיקיות?|סלאש /|בקסלאש \\\\|נקודה .|פסיק ,|1|
+Q|"פרויקט" במחשב שקול ל...?|קובץ בודד|תיקייה|תוכנה|מודל שפה|1|
+@l04|הרצאה 04 · כלכלת ה-AI|שוק, ערך ומדיניות בעידן הסוכנים
+Q|לפי מודל השוק מבוסס-סוכנים, לאן שואף מחיר מוצרי מידע?|עולה ללא הגבלה|P → MC → 0 (עלות שולית אפסית)|נשאר קבוע|P → אינסוף|1|
+Q|מהי "חברת העלות השולית האפסית" (Zero Marginal Cost Society)?|חברה ללא מסים|מצב שבו עלות שעתוק מוצר שואפת לאפס|חברה סוציאליסטית|בורסה|1|
+Q|מהו הכשל ההיסטורי המרכזי של הכלכלה הסוציאליסטית לפי ויכוח החישוב?|מחירים גבוהים מדי|כשל אפיסטמי — אין חישוב כלכלי רציונלי ללא שוק|יותר מדי תחרות|אבטלה|1|
+Q|"ספר הטכנולוגיה המשונן" (Jagged Frontier) מלמד ש...?|ה-AI מושלם בכל משימה|גבול יכולת ה-AI לא אחיד — הצלחות בתוך הגבול, נפילות מחוצה לו|ה-AI חלש בכל תחום|אין גבול ליכולת|1|
+Q|מחקר Noy & Zhang (Science) מצא ש-ChatGPT...?|האט את העבודה|הפחית זמן משימה ב-40% ושיפר איכות ב-18%|לא השפיע|שיפר רק מומחים|1|
+Q|"דחיסת פריון" (Productivity Compression) מתארת ש...?|המומחים נהנים הכי הרבה|עובדים חלשים יותר נהנים הכי הרבה והפער נסגר|כולם נפגעים|אין שינוי בפריון|1|
+Q|מהו הפתרון הרגולטורי שמציע ד"ר סגל לתקופת המעבר?|איסור על AI|מס על סוכני AI למימון המעבר|הלאמת החברות|אין רגולציה|1|
+Q|"המטבע החדש" בעידן ה-AI, לפי ההרצאה, הוא...?|ביטקוין|הידע הסטטי|תשומת הלב (Attention)|הכסף|2|
+Q|"מגן הסיליקון" (Silicon Shield) מתייחס ל...?|הגנת סייבר|התלות העולמית ב-TSMC (90%+ מהשבבים) כביטוח לטייואן|קיר אש|הצפנה|1|
+Q|"ההשטחה הגדולה" (Great Flattening) — טווח השליטה עלה מ...?|8.1 (2013) ל-12.1 (2025)|2 ל-5|20 ל-30|לא השתנה|0|
+Q|מהו "סוכן AI אוטונומי" (Agentic AI)?|צ'אט פשוט|ישות תוכנה המבצעת משימות מקצה-לקצה שדרשו מומחיות אנושית|מנוע חיפוש|מסד נתונים|1|
+Q|"תלות גומלין נשקית" (Weaponized Interdependence) מתארת...?|שיתוף פעולה גלובלי|שימוש בצווארי בקבוק של שרשראות ערך ככלי כפייה|מלחמת סייבר|סחר חופשי|1|
+@l05|הרצאה 05 · Vibe Coding|כתיבת קוד בשפה טבעית
+Q|מהי המשמעות של "Vibe Coding"?|תכנות ב-C בלבד|כתיבת קוד בשפה חופשית, בלי לדעת תכנות|תכנות בזוגות|הרצת קוד ללא מחשב|1|
+Q|מהם ארבעת השלבים בסדר הנכון?|יצירת קוד → הגדרת משימה → הרצה → שמירה|הגדרת משימה → יצירת קוד → שמירה → הרצה|שמירה → הרצה → יצירה → הגדרה|הגדרה → הרצה → יצירה → שמירה|1|
+Q|איזו פקודה מריצה תוכנית פייתון?|run file.py|python file.py|exe file.py|start file|1|
+Q|לפי המשל, פייתון הוא כמו...?|ההגה|הדלתות|המנוע|הצבע|2|
+Q|באיזו ספרייה נבנה השעון האנלוגי?|NumPy|Pandas|Turtle|TensorFlow|2|
+Q|מהו היתרון של עבודה מהטרמינל (Claude Code)?|הקוד רץ מהר פי 10|כל 4 השלבים במקום אחד|אין צורך בפייתון|לא צריך משימה|1|
+Q|מה עושים כשה-AI לא מבצע את הרצוי?|מוותרים|מאתחלים מחשב|"כועסים עליו" — מפנים ביקורת ומבקשים תיקון|פונים ל-IT|2|
+Q|מהו כלל חשוב בשמות קבצי פייתון?|חובה רווחים|סיומת .py, בלי רווחים|הסיומת לא חובה|חובה .exe|1|
+@l06|הרצאה 06 · שרשרת אספקה (תאוריה)|סוכנים, מודלים והנדסת פרומפטים
+Q|ההבדל בין "שיחה (Chat)" ל"סוכן (Agent)"?|מחיר|שיחה = שאלה-תשובה; סוכן מקבל מטרה, מפרק לתת-משימות ומבצע בעזרת כלים|סוכן לא גולש|אין הבדל|1|
+Q|מדוע אין לסמוך על חישובים מתמטיים של LLM?|איטי|המודל יודע סטטיסטיקה ולא חשבון ועלול להמציא|עולה כסף|מעגל כלפי מעלה|1|
+Q|מהי "כלכלת AI חיובית"?|שימוש חינמי|AI סגור ללא בקרה|תמיד יש "אדם בלולאה" המבקר ואחראי|רק מודלים סינים|2|
+Q|אילו שני שלבים קיימים בחיי מודל שפה?|קלט ופלט|אימון (Training) והסקה (Inference)|חיפוש ואחסון|שיחה וסוכן|1|
+Q|בדוגמת הסלון והספה, איזה כלי ייצר את התמונה הסופית?|ChatGPT|Perplexity|Nano Banana (Gemini)|Ollama|2|
+Q|איזה מודל מתואר כ"אלוף העולם בכתיבת קוד"?|Gemini|Perplexity|Manus|Claude|3|
+Q|לפי הכלל הרביעי בהנדסת פרומפטים, מה עדיף לבקש בבדיקת מסמכים?|"התאמה" ולאשר|"חריגות" ולהיות ביקורתי|לסכם|לתרגם|1|
+Q|מהו היתרון של הרצה מקומית (On-Prem) עם Ollama?|השקעה זולה|אין צורך במומחה|אין עלות טוקנים והמידע נשאר בבית|תמיד עדכני יותר|2|
+Q|מהו "תאריך תוקף" של מודל?|מועד תפוגת המנוי|היום האחרון שהמודל אומן עד אליו — גבול הידע העדכני|תאריך הרכישה|מועד המחיקה|1|
+Q|מהי תכונת ה-"Tools" של סוכן?|עורך טקסט|יכולות שהסוכן מפעיל: שליחת מייל, חיפוש, בחירת קבצים, החלטות|מסך|מקלדת|1|
+Q|מהו "Prompt Engineering"?|תיקון חומרה|האומנות של ניסוח בקשות מדויקות ל-AI כדי לקבל את התשובה הרצויה|אימון מודל|הצפנה|1|
+Q|מהי "הזיה" (Hallucination)?|פלט מדויק|המצאת מידע לא נכון על בסיס "מה הכי הגיוני שראיתי"|קריסת מערכת|עומס יתר|1|
+@l07|הרצאה 07 · תרגול שרשרת אספקה|יישום מעשי ושיקול דעת
+Q|לפי עקרון "סשן חדש לכל משימה", מה הנכון?|הכול באותה שיחה|שיחה חדשה (New Chat) לכל משימה|שיחה לכל שאלה|שתי שיחות במקביל|1|
+Q|מדוע הוטמנו יותר קבצים מהנדרש בתיקיות?|גיבוי|להאט את המודל|שהלומד יפעיל שיקול דעת ויבחר רק רלוונטיים|כולם רלוונטיים|2|
+Q|מהו "מסמך המפתח" בתרחיש עיכוב המשלוח?|החשבונית|תעודת המשקל|מדיניות הטיפול בעיכובים (Delay Response Policy)|תמונת המוצר|2|
+Q|מהו "אפקט השרשרת" (Chain Effect)?|עליית עלות המשלוח הבודד|עיכוב אחד פוגע גם במשלוחים נוספים "בקנה"|שרשור מודלים|שרשור שאלות|1|
+Q|מה נכון לגבי אחריות מקצועית?|המודל מחליף שיקול דעת|המודל תמיד צודק|המודל מאיץ אך האחריות והאימות על הלומד|האחריות על ספק המודל|2|
+Q|מהו שקף המצגת בתהליך, וכיצד להתייחס אליו מול המודל?|לצרף כמסמך המקרה|לרקע והבנה בלבד — אין לצרפו לשיחה עם המודל|להעתיק ממנו שאלות|מחליף את task.txt|1|
+Q|מהם ה-Incoterms שנבדקים במשימת החוזה?|מספר חבילות|תנאי סחר בינ"ל הקובעים אחריות ביטוח והובלה|קריאת שקילה|גובה ROI|1|
+Q|כיצד מגישים את תוצר התרגיל למרצה?|לכלל הקבוצה|בפרטי בצ'אט Zoom (Share Link/PDF)|רק ב-LMS|רק למתרגל|1|
+@l08|הרצאה 08 · Skills וחלון הקשר|קשב, טוקנים ומיומנויות
+Q|מהי הסיבוכיות של מנגנון הקשב (Self-Attention)?|O(N) לינארית|O(log N)|O(N²) ריבועית|O(N!)|2|כל טוקן מושווה לכל השאר → בסיס ל"ריקבון הקשר".
+Q|לפי "Lost in the Middle", היכן הדיוק הגבוה ביותר?|במרכז|בקצוות (Primacy + Recency)|בפיזור אחיד|רק בסוף|1|
+Q|פוריות טוקניזציה עברית מול אנגלית?|1.3 מול 3.25|~3.25 מול ~1.3 (פי ~2.5), בגלל BPE|יחס זהה|2.5 מול 5.0|1|האלגוריתם BPE אומן על אנגלית; עברית מפורקת ל"רסיסים".
+Q|ההבדל בין /clear ל-/compact?|הפוך|/clear מאפס סשן חדש; /compact דוחס תמצית באותו סשן|שתיהן מאפסות|/compact מוחקת זיכרון|1|
+Q|מהם ארבעת מרכיבי הסוכן (Weng, 2023)?|LLM, חלון הקשר, כלים, מאגר ידע (RAG)|מנוי, API, טוקן, סשן|System Prompt, Memory, Skill, Command|Governance, Execution, Compliance, Orchestration|0|LLM=מוח, חלון הקשר=זיכרון עבודה, כלים=ביצוע, RAG=זיכרון ארוך-טווח.
+Q|מהו היתרון של GraphRAG בשאילתות גלובליות?|מהיר בשאילתות ממוקדות|לא דורש LLM|גרף ידע היררכי עם סיכומי קהילות; חוסך עד 90% טוקנים|מאחסן קורפוס גולמי בחלון|2|
+Q|לפי פרדוקס אוטומציה–אוגמנטציה, מהי הגישה המומלצת?|אוטומציה מלאה|אוגמנטציה — שיתוף אדם–מכונה, הסוכן "טייס משנה"|הימנעות מוחלטת|העברת כל המומחיות למכונה|1|
+Q|מהו "גילוי הדרגתי" (Progressive Disclosure) ב-SKILL.md?|מחיקה הדרגתית|טעינה מלאה בהתחלה|3 רמות: מטא-נתונים תמיד, הנחיות בהפעלה, משאבים בביצוע|הצגת כל התוכן לפני הרצה|2|
+Q|כמה טוקנים ≈ מילה באנגלית?|0.5|~1.3|5|10|1|
+Q|מהו RAG במודל מרכיבי הסוכן?|רכיב קוגניטיבי נפרד|זיכרון חיצוני ארוך-טווח, מיושם עם כלי אחזור (Retriever)|מנוע חיפוש|חלון הקשר|1|
+Q|מהו "מס הטוקנים" (Token Tax) לעברית — כמה מיסים?|מס אחד|שני מיסים|ארבעה: פיננסי, חישובי, קיבולת קוגניטיבית, דיוק|עשרה|2|
+Q|בכמה גדל חלון ההקשר (אז → היום)?|10K → 50K|200K → מיליון|1K → 10K|מיליון → מיליארד|1|
+@l09|הרצאה 09 · Git, GitHub ו-Gmail API|ניהול גרסאות, OAuth ואסטרטגיה
+Q|ההבדל בין Client ל-Token בחיבור ל-Google?|הפוך|Client מעביר תקשורת ל-Google, Token מחזיק את ההרשאות|זהים|Token = טוקן של LLM|1|
+Q|מדוע אין להשתמש במילת מפתח בודדת ("פגישה") לזיהוי זימון?|עברית לא נתמכת|זה הופך ל-Rule-based; הסוכן צריך לזהות כוונה לפי התוכן|מגדיל technical debt|Google חוסמת|1|
+Q|מהם ארבעת התפקידים ב-OAuth 2.0?|Client, Server, Database, User|Resource Owner, Client, Authorization Server, Resource Server|Gmail, Calendar, Token, Scope|Angel, Seed, Owner, Server|1|
+Q|סטודנט עם Commit אחד מול סטודנטית עם 144 Commits — מה נכון?|זהים|האחד עדיף|144 מקצועי מאוד; אחד = הכי לא מקצועי|ריבוי = חוסר ניסיון|2|
+Q|הסדר הנכון של מחזור חיי הפיתוח?|To-Do → Plan → PRD|PRD → Plan → To-Do|Plan → PRD → To-Do|README → PRD → Plan|1|
+Q|מה מאפשר Git כשמתגלה תקלה בגרסה 1 בעוד הפיתוח בגרסה 2?|לחזור אחורה ולשחזר גרסה 1 בעוד 2 נשמרת|למחוק גרסה 2|לשלב אוטומטית|להעביר לענן לתיקון|0|
+Q|ההבדל בין Push ל-Pull?|הפוך|Push מעלה מהמחשב לענן; Pull מוריד מהענן למחשב|Push שומר מקומית|שניהם Commit|1|
+Q|מי פיתח את Git ובאיזו שנה?|OpenAI, 2015|Linus Torvalds, 2005|Google, 2008|Microsoft, 2001|1|
+Q|מהו "Moat" (חפיר) בעולם העסקי, לפי RBV/VRIN?|הקוד הפתוח|מספר הקומיטים|יתרון תחרותי בר-קיימא (Valuable/Rare/Inimitable/Non-substitutable)|פרוטוקול OAuth|2|
+Q|מהי "אסטרטגיית ה'חינם'"?|לגבות מחיר גבוה|להתחיל בחינם, לאסוף משתמשים לפני שמתחרים נכנסים|לא לפרסם|למכור מיד|1|
+Q|מהו "דילול" (Dilution) בגיוס הון?|הגדלת הבעלות|ויתור על אחוזי בעלות בכל סבב (יזם נשאר ~3%–5%)|הלוואה|מס|1|
+Q|מהו README?|רשימת משימות|קובץ המתאר מה הפרויקט עושה וכיצד מריצים אותו|מסמך דרישות|ענף Git|1|
+@l10|הרצאה 10 · מולטימדיה|וידאו, שמע ו-FFmpeg
+Q|מה המשמעות של .mp4?|מנוע עריכה|שם המיכל (Container) המכיל ערוצים|פורמט שמע בלבד|אלגוריתם ביטים|1|
+Q|במודל "השמע מוביל", מי קובע את הקצב?|התמונות|הכתוביות|ערוץ השמע, והשאר מיישרים אליו|כולם עצמאיים|2|
+Q|מדוע הפקת הקליפ "כמעט לא שותה טוקנים"?|המודל מייצר את הווידאו|המודל רק מתזמר בפקודות קצרות, לא מייצר מדיה כבדה|חינם ב-Suno|FFmpeg מוצפן|1|
+Q|ההבדל בין סוכן CLI מקומי לצ'אט דפדפן?|הדפדפן טוב יותר|המקומי לא כותב קוד|המקומי ניגש לקבצים ומריץ FFmpeg; הדפדפן כותב פקודה אך לא מריץ|אין הבדל|2|
+Q|במקצב 4/4, החלפת תמונה בכל ביט (במקום בכל בית) נותנת...?|שבירת סנכרון|קצב חיתוך מהיר פי ארבעה|עצירת התמונות|השתקה אוטומטית|1|
+Q|מהם ארבעת רכיבי הסוכן (לפי L10)?|FFmpeg, Suno, librosa, PowerShell|LLM, חלון הקשר, RAG, מיומנויות/כלים|מיכל, ערוצים, חותם זמן, כתוביות|מילים, סגנון, שמע, תמונות|1|
+Q|מהי "המיומנות העוטפת את FFmpeg"?|ממשק גרפי|שרת ענן|תוכנית Python המתרגמת בקשה בשפה טבעית לפקודת FFmpeg|אלגוריתם ביטים|2|
+Q|מהי "היגיינת פרויקט"?|ניקוי מווירוסים|ריכוז השמע וכל התמונות בתיקייה אחת שבה נפתח ה-CLI|השתקת שמע|גיבוי בענן|1|
+Q|מהו MCP (Model Context Protocol)?|פרוטוקול הצפנה|תקן פתוח לחיבור סוכנים לכלים ומקורות חיצוניים|מודל שפה|עורך וידאו|1|
+Q|~כמה אחוז מקטעי הווידאו נלווה בהם שמע (שיש להשתיק)?|10%|50%|90%|100%|2|
+Q|מהו החזון של "Agentic OS"?|מערכת ממוקדת-יישומים|מעבר לממוקדת-כוונה — סוכן יחיד מתזמר כלים לפי מטרה בשפה חופשית|מערכת הפעלה חדשה של Windows|דפדפן|1|
+@l11|הרצאה 11 · מצגות HTML|יצירת מצגת אינטראקטיבית בסוכן AI
+Q|מהו "מחסום הכלי" (tool barrier) שהרצאה 11 באה לפתור?|מנהל ללא רקע טכני נדרש לשלוט בכלי תוכנה מורכב כדי להפיק מצגת עשירה|השרתים בענן יקרים מדי|הדפדפן אינו מציג מצגות בעברית|חלון ההקשר קטן מכדי להכיל מצגת|0|
+Q|כיצד סוכן ה-AI "הופך" את מחסום הכניסה?|המנהל מתאר כוונה בשפה טבעית והסוכן בונה — במקום לשלוט בכלי מורכב|מוריד את מחיר PowerPoint לאפס|מלמד את המנהל לתכנת תוך שעה|מגדיל את מהירות המחשב|0|
+Q|מהי הגדרת "קצה-קדמי" (Front-end)?|ממשק המשתמש הגרפי — מה שהמשתמש רואה ומפעיל (כפתורים, אנימציות)|השרת בענן שבו החישוב והאחסון|מסד הנתונים המרכזי|פרוטוקול ההצפנה|0|
+Q|מהו "קצה-אחורי" (Back-end)?|השרת בענן — אחסון, לוגיקה, חישוב וניהול נתונים ("העבודה השחורה")|הכפתורים והאנימציות שהמשתמש רואה|גופן וצבע הרקע|כבל הרשת|0|
+Q|מהו "מבחן ניתוק הכבל" ומה הוא בודק?|מנתקים רשת: אם המערכת נעצרת — קיים קצה-אחורי; אם ממשיכה — היא מקומית|בודק סוללת גיבוי|בודק חיבור USB|בודק כרטיס מסך|0|
+Q|אילו יישומים הם "מלוא-מחסנית" (תלויי שרת)?|Gmail, WhatsApp, Yad2, Google Slides|PowerPoint, מחשבון, שעון, מצגת HTML מקומית|רק מחשבון ושעון|אף אחד|0|
+Q|מצגת ה-HTML המקומית שבונים בקורס מסווגת כ...?|יישום מקומי (self-contained) — הכול רץ על מחשב המשתמש ללא שרת|יישום מלוא-מחסנית התלוי בשרת|שירות ענן כמו Gmail|אפליקציית מובייל|0|
+Q|ההבחנה "לקוח דק" (thin) מול "לקוח שמן" (fat) מבחינה בין...?|יישום התלוי בשרת מרוחק לבין יישום מקומי עצמאי|מחשב זול לבין יקר|מודל קטן לבין גדול|קובץ קצר לבין ארוך|0|
+Q|לפי האנלוגיה, הדפדפן (Chrome) מתפקד כ...?|"נגן" — כשם שנגן מדיה מנגן שירים, הוא טוען ומציג דפי HTML|שרת המאחסן את המצגת|מסד נתונים של תמונות|כלי עריכת וידאו|0|
+Q|באנלוגיית הנגן, מהי המקבילה ל"בחירת שיר חדש"?|כתובת URL — טעינת דף HTML חדש|לחיצה על כפתור העוצמה|חיבור אוזניות|הגדלת החלון|0|
+Q|מהו היחס בין "שקופית" לבין "דף HTML"?|כל שקופית = דף HTML אחד; מעבר בין שקופיות = מעבר בין דפים|כל המצגת היא דף יחיד|שקופית מכילה כמה דפים|אין קשר|0|
+Q|מהו תפקידו של הקובץ index.html?|דף הנחיתה השמור שהדפדפן פותח ראשון כשמריצים את האתר|קובץ הגדרות עם הסיסמה|קובץ המאחסן תמונות|קובץ יומן שגיאות|0|
+Q|מדוע העברת index.html בלבד (בלי שאר התיקייה) תשבור את המצגת?|המצגת נשענת גם על קבצי השקופיות והנכסים (assets) שבתיקייה|הקובץ מוצפן|הדפדפן חוסם קבצים מועברים|הקובץ חייב להישאר בענן|0|
+Q|מהו הסדר הנכון של ה-Pipeline להכנת מצגת HTML?|צ'אט→בקשת "תסריט"; שמירה כ-AI.txt; סוכן CLI מייצר HTML; לחיצה כפולה על index.html|HTML ידני→קומפילציה→העלאה→שיתוף|לחיצה על index.html→שמירה→תסריט→הרצה|PowerPoint→ייצוא→העלאה→פרסום|0|
+Q|מדוע מתעקשים לבקש "תסריט" ולא ישירות שקופיות?|התסריט מתאר במילים כל שקופית (תוכן, אפקטים, צבעים) ומאפשר שליטה לפני היצירה|המודל אינו מסוגל ליצור שקופיות|תסריט מהיר יותר להקלדה|תסריט חוסך אסימונים בהכרח|0|
+Q|זרם העיבוד של המצגת זהה במבנהו ל...?|תרגיל השעון (Vibe Coding) — אותו מבנה, בשינוי פורמט הפלט בלבד|תהליך התקנת מערכת ההפעלה|תהליך גיוס ההון|תהליך ההצפנה|0|
+Q|מהי ההמלצה לגבי מורכבות הבקשה בשלב הראשון?|להתחיל בקטן ולוודא שמשהו עובד, ורק אז לשפר — עבודה הדרגתית|לבקש מיד את המצגת המורכבת ביותר|לבקש 200 שקופיות בבת אחת|לדלג על שלב הבדיקה|0|
+Q|ההבדל בין מצגת "מבוססת-אובייקטים" ל"מבוססת-תמונות"?|אובייקטים = צורות/גרפים (מדויקת, "קרה"); תמונות = ויזואלים עשירים (חגיגית)|אובייקטים בענן ותמונות מקומית|אין הבדל מהותי|מבוססת-תמונות מדויקת יותר לטכני|0|
+Q|מהו הרעיון מאחורי שאיבת סגנון באמצעות JSON?|להפריד את הסגנון מהתוכן ולתאר את הסגנון (צבעים, גופנים) בקובץ מובנה|לדחוס את המצגת|להצפין את התוכן|לתרגם את המצגת|0|
+Q|בתהליך שאיבת הסגנון, מהו תפקיד קובץ ה-JSON?|"גשר" מובנה בין סוכן המנתח את התבנית לבין סוכן התסריט הבונה את המצגת|להריץ את המצגת|לאחסן סיסמאות|להאיץ טעינה|0|
+Q|לאיזו טכניקה קודמת דומה שאיבת הסגנון ב-JSON?|תיאור סגנון מוזיקלי ב-JSON והזרקתו לכלי יצירה כמו Suno|הצפנת קבצים ב-Git|חישוב וקטורים|התקנת Python|0|
+Q|מהי חלוקת התפקידים בין שלוש שכבות הרשת?|HTML=מבנה ותוכן; CSS=עיצוב; JavaScript=התנהגות|HTML=עיצוב; CSS=התנהגות; JS=מבנה|שלושתן רק צבעים|HTML=ענן; CSS=שרת; JS=מסד נתונים|0|
+Q|עקרון "הפרדת דאגות" (Separation of Concerns) מאפשר...?|לשנות עיצוב בלי לגעת בתוכן, והתנהגות בלי לשנות מבנה — מודולריות|להריץ ללא דפדפן|למחוק את שכבת ה-CSS|לחבר שני מחשבים|0|
+Q|מה תפקיד שכבת ה-JavaScript במצגת?|התנהגות — כפתורי ניווט (הבא/הקודם/ראשי) ומעברים בין שקופיות|הגדרת הצבעים והגופנים|אחסון התמונות|הצפנת הקבצים|0|
+Q|הסיומת .js שייכת ל...?|JavaScript (המתוקננת ב-ECMA-262) — אין לבלבל עם Java|שפת Java|קובץ תמונה|קובץ CSS|0|
+Q|לשם מה מורים לסוכן "הקפד על BiDi"?|לטיפול בכיווניות דו-כיוונית (עברית/אנגלית) ומניעת היפוך הטקסט העברי|להאיץ טעינה|להגדיל חלון הקשר|להצפין טקסט|0|Bidirectional; מבוסס על אלגוריתם Unicode UAX #9.
+Q|כיצד מוסיפים פס-קול למצגת, ומה מדגים הדבר?|מורים לסוכן FFmpeg ("מדביק תמונות עם קול") — יישום עטיפת כלי מורכב בשפה טבעית|מקליטים קול ידנית בכל שקופית|מעלים ל-YouTube|כותבים קוד C++|0|
+Q|מהו "תיאום רב-סוכני" (Multi-Agent Coordination) בהכנת המצגת?|חלוקת התפקיד לסוכן תסריטאי ("מפיק הוליוודי") וסוכן מקודד טכני|הרצת אותו סוכן פעמיים|חיבור שני מחשבים|שני מסכים בו-זמנית|0|
+Q|מדוע עדיפים שני מומחים על פני סוכן כללי יחיד?|ההפרדה הופכת את התהליך לשליט וניתן-לחזרה; סוכן כללי יאבד שליטה ואיכות|שני סוכנים זולים יותר|סוכן יחיד לא כותב HTML|החוק מחייב שני סוכנים|0|
+Q|כיצד יש לשתף מצגת שהושלמה?|להעביר את כל תיקיית הפרויקט (כולל נכסים), או לבקש אריזה לקובץ אחד רץ|לשלוח קישור בלבד ל-index.html|לצלם מסך של כל שקופית|אי-אפשר לשתף מצגת מקומית|0|
+Q|מהי מגבלת "מהימנות הקוד" ומה הפתרון?|מודל עלול "להזות" ולייצר קוד שגוי — היוצר נותר "אדם בלולאה" המאמת כל פלט|הקוד תמיד מושלם|להימנע לגמרי מסוכנים|להריץ רק בענן|0|
+Q|מדוע מצגת HTML אינה נגישה יותר מ-PowerPoint כברירת מחדל?|נגישות דורשת עמידה ב-WCAG (מבנה כותרות, טקסט חלופי, ניגודיות) — ויש לבקש מפורשות|HTML נגיש יותר אוטומטית|תלוי רק בגודל המסך|אין קשר בין HTML לנגישות|0|
+Q|אילו סיכונים כלולים ב"אבטחה ותלות בספקים"?|חולשות אבטחה בקוד, ותלות ב-API מסחריים החשופים לשינויי מדיניות, מחיר וזמינות|סיכון התחשמלות|סיכון אובדן חשמל|אין סיכונים|0|
+Q|אילו מסגרות מוצגות כ"חלופות" ייעודיות למצגות מבוססות-רשת?|reveal.js ו-Marp|Photoshop ו-Illustrator|Excel ו-Word|Python ו-Java|0|
+Q|מתי שיטת הספר (סוכן AI) פחות מתאימה?|מדיניות אבטחה האוסרת LLM בענן, צורך במוצר מהיר ופשוט, או חוסר ידע ב-HTML/CSS|תמיד — לעולם לא מתאימה|רק בעברית|רק עם אינטרנט מהיר|0|
+Q|מהי התמונה הגדולה המסכמת ("סוכן אחד מתזמר כלים רבים")?|סוכן-מתזמר יחיד במרכז, וסביבו הכלים שנלמדו (HTML, FFmpeg, Python, טרמינל, פרומפטים, Git) — "מערכת הפעלה סוכנית"|כל נושא עומד לעצמו|HTML מחליף את כל הכלים|הסוכן פועל ללא כלים|0|
+Q|מהו היתרון של גישת ה"מיומנויות" (Skills) כשכלי חדש נכנס לשוק?|הסוכן "מכיר" את הכלי החדש והמשתמש נהנה מיד — הכלי מוסתר מאחורי מיומנות בשפה טבעית|חובה להתקין מחדש את מערכת ההפעלה|יש ללמוד את תחביר הכלי בעל-פה|הכלי הופך לתוכנה היחידה|0|
+`;
+
+/* ---------- parse ---------- */
+const topics=[]; let cur=null;
+RAW.trim().split("\n").forEach(line=>{
+  if(!line.trim())return;
+  if(line[0]==="@"){const p=line.slice(1).split("|");cur={id:p[0],name:p[1],short:p[2],qs:[]};topics.push(cur);}
+  else if(line.startsWith("Q|")){
+    const p=line.split("|");
+    cur.qs.push({q:p[1],o:[p[2],p[3],p[4],p[5]],c:+p[6],e:p[7]||""});
+  }
+});
+const ALL=[];topics.forEach(t=>t.qs.forEach(q=>ALL.push({...q,topic:t.id,tname:t.name})));
+
+/* ---------- state / storage ---------- */
+const LS="biu865_bestv1";
+const best=JSON.parse(localStorage.getItem(LS)||"{}");
+function saveBest(id,pct){if(!(id in best)||pct>best[id]){best[id]=pct;localStorage.setItem(LS,JSON.stringify(best));}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ---------- theme ---------- */
+const root=document.documentElement;root.setAttribute("dir","rtl");root.lang="he";
+const savedTheme=localStorage.getItem("biu_theme");if(savedTheme)root.setAttribute("data-theme",savedTheme);
+document.getElementById("themeBtn").onclick=()=>{
+  const cur=root.getAttribute("data-theme")|| (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+  const next=cur==="dark"?"light":"dark";root.setAttribute("data-theme",next);localStorage.setItem("biu_theme",next);
+};
+
+/* ---------- home render ---------- */
+document.getElementById("stTotal").textContent=ALL.length;
+document.getElementById("stTopics").textContent=topics.length;
+const grid=document.getElementById("topicGrid");
+const LET=["א","ב","ג","ד"];
+function bestChip(id){return (id in best)?`<span class="chip done">✓ ${best[id]}%</span>`:`<span class="chip">—</span>`;}
+function card(html){const b=document.createElement("button");b.className="card";b.innerHTML=html;return b;}
+
+topics.forEach(t=>{
+  const c=card(`<span class="tag">${t.name.split("·")[0].trim()}</span><h3>${t.name.split("·")[1].trim()}</h3><p>${t.short}</p><div class="foot"><span>${t.qs.length} שאלות</span>${bestChip("t_"+t.id)}</div>`);
+  c.onclick=()=>start(t.qs,t.name,"t_"+t.id);
+  grid.appendChild(c);
+});
+const cSim=card(`<span class="tag">סימולציה</span><h3>מבחן מלא</h3><p>50 שאלות אקראיות מכל הקורס — כמו בבחינה</p><div class="foot"><span>50 שאלות</span>${bestChip("sim")}</div>`);
+cSim.className="card special";cSim.onclick=()=>start(shuffle(ALL).slice(0,Math.min(50,ALL.length)),"סימולציית מבחן — 50 שאלות","sim");
+grid.appendChild(cSim);
+const cAll=card(`<span class="tag">מרתון</span><h3>כל השאלות</h3><p>כל בנק השאלות ברצף אחד, בסדר אקראי</p><div class="foot"><span>${ALL.length} שאלות</span>${bestChip("all")}</div>`);
+cAll.className="card special";cAll.onclick=()=>start(shuffle(ALL),"כל השאלות","all");
+grid.appendChild(cAll);
+
+/* ---------- quiz engine ---------- */
+const home=document.getElementById("home"),quiz=document.getElementById("quiz"),stage=document.getElementById("stage");
+let S=null;
+function start(pool,title,key){
+  const qs=shuffle(pool).map(q=>{
+    const order=shuffle([0,1,2,3]);
+    return {q:q.q,opts:order.map(i=>q.o[i]),correct:order.indexOf(q.c),e:q.e,tname:q.tname||title,topic:q.topic};
+  });
+  S={qs,i:0,score:0,answered:false,title,key,perTopic:{}};
+  home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);render();
+}
+function backHome(){quiz.classList.remove("active");home.classList.remove("hide");refreshChips();window.scrollTo(0,0);}
+document.getElementById("backBtn").onclick=backHome;
+
+function render(){
+  const q=S.qs[S.i],n=S.qs.length;
+  document.getElementById("qMeta").textContent=`${S.title}`;
+  document.getElementById("pfill").style.width=(S.i/n*100)+"%";
+  S.answered=false;
+  stage.innerHTML=`
+    <div class="qcard">
+      <div class="qnum">שאלה ${S.i+1} מתוך ${n}</div>
+      <p class="qtext">${q.q}</p>
+      <div class="opts" id="opts"></div>
+      <div class="expl" id="expl"></div>
+      <div class="qnav">
+        <span class="livescore">ציון: <b>${S.score}</b> / ${S.i}</span>
+        <button class="btn" id="next" disabled>${S.i+1<n?"הבא ←":"סיום ותוצאות"}</button>
+      </div>
+    </div>`;
+  const opts=document.getElementById("opts");
+  q.opts.forEach((txt,idx)=>{
+    const b=document.createElement("button");b.className="opt";
+    b.innerHTML=`<span class="letter">${LET[idx]}</span><span>${txt}</span>`;
+    b.onclick=()=>choose(idx,b);opts.appendChild(b);
+  });
+  document.getElementById("next").onclick=()=>{if(S.i+1<n){S.i++;render();window.scrollTo({top:0,behavior:"smooth"});}else results();};
+}
+function choose(idx,btn){
+  if(S.answered)return;S.answered=true;
+  const q=S.qs[S.i],buttons=[...document.querySelectorAll(".opt")];
+  buttons.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add("correct");else if(i===idx)b.classList.add("wrong");else b.classList.add("dim");});
+  const tk=q.topic||"?";S.perTopic[tk]=S.perTopic[tk]||{c:0,n:0,name:q.tname};S.perTopic[tk].n++;
+  if(idx===q.correct){S.score++;S.perTopic[tk].c++;}
+  const ex=document.getElementById("expl");
+  const correctTxt=q.opts[q.correct];
+  ex.innerHTML=(idx===q.correct?`<b>נכון!</b> `:`<b>התשובה הנכונה:</b> ${correctTxt}. `)+(q.e?`<br>${q.e}`:"");
+  ex.classList.add("show");
+  document.getElementById("next").disabled=false;
+  document.querySelector(".livescore").innerHTML=`ציון: <b>${S.score}</b> / ${S.i+1}`;
+  document.getElementById("pfill").style.width=((S.i+1)/S.qs.length*100)+"%";
+}
+function results(){
+  const n=S.qs.length,pct=Math.round(S.score/n*100);
+  saveBest(S.key,pct);
+  const rows=Object.values(S.perTopic).sort((a,b)=>a.c/a.n-b.c/b.n).map(t=>{
+    const p=Math.round(t.c/t.n*100);
+    return `<div class="brow"><span class="bn">${(t.name||"").split("·")[0]}${(t.name||"").includes("·")?"·"+t.name.split("·")[1]:""}</span><span class="bt"><i style="width:${p}%;background:${p>=70?'var(--good)':p>=40?'var(--warm)':'var(--bad)'}"></i></span><span class="bv">${t.c}/${t.n}</span></div>`;
+  }).join("");
+  const weak=Object.values(S.perTopic).filter(t=>t.c/t.n<0.7).map(t=>(t.name||"").split("·")[0].trim());
+  const msg=pct>=90?"מצוין! שליטה מלאה 🎯":pct>=75?"יפה מאוד — כמעט שם 💪":pct>=50?"בסיס טוב, יש מה לחדד 📖":"כדאי לחזור על החומר לפני הבחינה 📚";
+  document.getElementById("pfill").style.width="100%";
+  document.getElementById("qMeta").textContent="תוצאות";
+  stage.innerHTML=`
+    <div class="qcard res">
+      <div class="ring" style="--p:${pct}"><div class="inner"><div class="pct">${pct}<small>%</small></div></div></div>
+      <h2>${S.score} מתוך ${n} נכון</h2>
+      <p class="sub">${msg}</p>
+      ${rows?`<div class="breakdown">${rows}</div>`:""}
+      ${weak.length?`<p class="sub">מומלץ לחזק: ${weak.join(" · ")}</p>`:""}
+      <div class="actions">
+        <button class="btn" id="again">תרגול חוזר</button>
+        <button class="btn ghost" id="home2">חזרה לנושאים</button>
+      </div>
+    </div>`;
+  document.getElementById("again").onclick=()=>{const pool=S.title.includes("סימולציה")?shuffle(ALL).slice(0,50):S.title.includes("כל השאלות")?ALL:topics.find(t=>t.name===S.title).qs;start(pool,S.title,S.key);};
+  document.getElementById("home2").onclick=backHome;
+}
+function refreshChips(){
+  // re-render chips on home to reflect new best scores
+  grid.querySelectorAll(".card").forEach((c)=>{});
+  document.querySelectorAll("#topicGrid .card").forEach(c=>{});
+  // simplest: rebuild chips text
+  const cards=[...grid.children];
+  topics.forEach((t,idx)=>{const chip=cards[idx].querySelector(".chip");if(chip){const b=best["t_"+t.id];chip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}});
+  const simChip=cards[topics.length]?.querySelector(".chip");if(simChip){const b=best["sim"];simChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
+  const allChip=cards[topics.length+1]?.querySelector(".chip");if(allChip){const b=best["all"];allChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
+}
+</script>
