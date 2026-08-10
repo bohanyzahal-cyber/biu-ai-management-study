@@ -1,0 +1,917 @@
+<!doctype html><html lang=he dir=rtl><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>מדריך למידה למבחן — יישומי בינה מלאכותית בניהול</title><style>
+:root{--bg:#F3F4F1;--surface:#FCFCFA;--surface2:#ECEFE9;--ink:#191C1F;--muted:#5B6470;--border:#E1E3DD;--accent:#17646E;--accent2:#0F4E57;--warm:#C67F2C}
+@media(prefers-color-scheme:dark){:root{--bg:#13161A;--surface:#1B2025;--surface2:#242B32;--ink:#E8EBE8;--muted:#96A0AB;--border:#2D343C;--accent:#45AAB4;--accent2:#67C3CC;--warm:#D79A4A}}
+:root[data-theme=light]{--bg:#F3F4F1;--surface:#FCFCFA;--surface2:#ECEFE9;--ink:#191C1F;--muted:#5B6470;--border:#E1E3DD;--accent:#17646E;--accent2:#0F4E57;--warm:#C67F2C}
+:root[data-theme=dark]{--bg:#13161A;--surface:#1B2025;--surface2:#242B32;--ink:#E8EBE8;--muted:#96A0AB;--border:#2D343C;--accent:#45AAB4;--accent2:#67C3CC;--warm:#D79A4A}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{margin:0;background:var(--bg);color:var(--ink);direction:rtl;font-family:"Segoe UI","Assistant",system-ui,Arial,sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:26px 20px 70px}
+.bar{position:sticky;top:0;background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);margin:-26px -20px 22px;padding:12px 20px;display:flex;align-items:center;gap:12px;z-index:5}
+.bar b{font-weight:700}
+.bar a{color:var(--accent);text-decoration:none;font-size:14px}
+.bar .sp{flex:1}
+.tbtn{background:var(--surface2);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer}
+h1{font-size:28px;letter-spacing:-.02em;line-height:1.15;margin:.4em 0 .5em;text-wrap:balance}
+h2{font-size:22px;letter-spacing:-.01em;margin:1.4em 0 .5em;padding-bottom:.25em;border-bottom:2px solid var(--accent);color:var(--accent)}
+h3{font-size:18px;margin:1.2em 0 .4em;color:var(--ink)}
+h4{font-size:15.5px;margin:1em 0 .3em;color:var(--muted)}
+p{margin:.6em 0}
+a{color:var(--accent)}
+strong,b{color:var(--accent2)}
+ul,ol{padding-inline-start:22px;margin:.5em 0}
+li{margin:.25em 0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--surface2);padding:1px 5px;border-radius:5px;direction:ltr;display:inline-block}
+pre{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow-x:auto;direction:ltr;text-align:left}
+pre code{background:none;padding:0}
+blockquote{margin:.8em 0;padding:.4em 14px;border-inline-start:3px solid var(--accent);background:var(--surface2);border-radius:8px;color:var(--ink)}
+hr{border:0;border-top:1px solid var(--border);margin:1.8em 0}
+table{border-collapse:collapse;width:100%;margin:1em 0;font-size:14.5px;display:block;overflow-x:auto}
+th,td{border:1px solid var(--border);padding:7px 10px;text-align:right;vertical-align:top}
+th{background:var(--surface2);font-weight:700}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--surface2) 45%,transparent)}
+@media(max-width:560px){body{font-size:15px}h1{font-size:24px}}
+@media print{@page{margin:12mm}.bar{display:none}body{font-size:11pt}h2{break-after:avoid}pre,table,blockquote{break-inside:avoid}}
+</style></head><body><div class=wrap><div class=bar><b>📘 מדריך למידה למבחן</b><span class=sp></span><a href="index.html">← לאתר התרגול</a><button class=tbtn onclick="var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c=='dark'?'light':'dark')">🌗</button></div><h1 id="_1">📘 מדריך למידה למבחן — יישומי בינה מלאכותית בניהול</h1>
+<h3 id="-2026">ד"ר יורם סגל | אוניברסיטת בר-אילן | סמסטר ב' 2026</h3>
+<blockquote>
+<p><strong>פורמט המבחן (SPEED TEST):</strong> אמריקאי, <strong>חומר פתוח מודפס בלבד</strong> (אין מחשבון/טלפון/שעון חכם), על מחשב במעבדה, <strong>90 דקות</strong>. יש <strong>180 שאלות — עונים רק על 60</strong> (בוחרים את הבטוחות ביותר, מדלגים בחופשיות). <strong>ציון = נכונות ÷ max(מספר שענית, 60) × 100</strong> → 60 נכון = 100. ⛔ תשובה שגויה <em>מעבר ל-60</em> מורידה ציון — אל תנחש מעבר ל-60. <strong>אין ציון השוואתי.</strong> <strong>שום שאלה אינה מחוץ לחומר הקורס.</strong> משקל: 2 עבודות = 30% (סף 60), מבחן = 70% (סף 60). בונוס עד 10 נק'.</p>
+<p><strong>טיפ מפתח:</strong> המבחן מהיר — אין זמן לחפש. השתמש במדריך הזה כדי לשלוט במונחים ובמספרים, ולא רק להסתמך על החיפוש.</p>
+</blockquote>
+<hr />
+<h2 id="10">🎯 מפת החומר — 10 הרצאות</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>נושא</th>
+<th>ליבה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>AI כווקטורים במרחב N-ממדי</td>
+<td>מהו AI, ML, Deep Learning, ייצוג מידע כווקטור</td>
+</tr>
+<tr>
+<td>03</td>
+<td>טרמינל (CLI) והתקנת Codex</td>
+<td>טרמינל, CLI, Node/npm, OAuth, Sandbox</td>
+</tr>
+<tr>
+<td>04</td>
+<td>כלכלת ה-AI</td>
+<td>⭐ ההרצאה התאורטית העמוקה — כל התוכן חומר מבחן</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Vibe Coding בפייתון</td>
+<td>כתיבת קוד בשפה טבעית, 4 שלבים</td>
+</tr>
+<tr>
+<td>06</td>
+<td>שרשרת אספקה מבוססת AI (תאוריה)</td>
+<td>Chat מול Agent, Training מול Inference, הזיות, פרומפטים</td>
+</tr>
+<tr>
+<td>07</td>
+<td>תרגול מעשי בשרשרת אספקה</td>
+<td>סשן לכל משימה, אימות, אחריות מקצועית</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Skills וחלון הקשר</td>
+<td>⭐ טוקנים, Context Window, O(N²), SKILL.md, GraphRAG</td>
+</tr>
+<tr>
+<td>09</td>
+<td>Git / GitHub + Gmail API</td>
+<td>ניהול גרסאות, OAuth, PRD→Plan→ToDo, יזמות</td>
+</tr>
+<tr>
+<td>10</td>
+<td>מולטימדיה עם סוכני AI</td>
+<td>מיכל+ערוצים, "השמע מוביל", FFmpeg, Agentic OS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="_2">🔢 מספרים ועובדות לזכור (קריטי למבחן!)</h2>
+<table>
+<thead>
+<tr>
+<th>ערך</th>
+<th>הקשר</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>מילה ≈ 1.3 טוקן</strong> (אנגלית) / <strong>טוקן ≈ 0.75 מילה</strong></td>
+<td>כלכלת טוקנים (L08)</td>
+</tr>
+<tr>
+<td>פוריות (Fertility): <strong>עברית ≈ 3.25</strong> מול <strong>אנגלית ≈ 1.3</strong> → <strong>פי ~2.5</strong></td>
+<td>"מס הטוקנים" (L08)</td>
+</tr>
+<tr>
+<td>חלון הקשר: <strong>200K → מיליון (1,000,000) טוקנים</strong></td>
+<td>Claude/Gemini/ChatGPT (L08)</td>
+</tr>
+<tr>
+<td><strong>~$5 למיליון טוקנים</strong> (מסלול API)</td>
+<td>תמחור (L08)</td>
+</tr>
+<tr>
+<td>סיבוכיות מנגנון הקשב <strong>O(N²)</strong> ריבועית</td>
+<td>Self-Attention / Transformer (L08, L10)</td>
+</tr>
+<tr>
+<td>GraphRAG חוסך <strong>עד 90%</strong> טוקנים בשאילתות גלובליות</td>
+<td>(L08)</td>
+</tr>
+<tr>
+<td>ChatGPT הפחית זמן משימה ב-<strong>40%</strong> ושיפר איכות ב-<strong>18%</strong> (Noy &amp; Zhang, <em>Science</em>)</td>
+<td>דחיסת פריון (L04)</td>
+</tr>
+<tr>
+<td>מחיר מודל: חינם / <strong>~$20</strong> / עד <strong>$200</strong> לחודש</td>
+<td>מסלולי תמחור (L01, L08)</td>
+</tr>
+<tr>
+<td>Python <strong>3.13</strong></td>
+<td>גרסת העבודה (L05)</td>
+</tr>
+<tr>
+<td><strong>~90%</strong> מקטעי הווידאו נלווה בהם שמע</td>
+<td>ניקוי/השתקה (L10)</td>
+</tr>
+<tr>
+<td>מקצב <strong>4/4</strong> = 4 רבעים לבית מקצב</td>
+<td>סנכרון לביטים (L10)</td>
+</tr>
+<tr>
+<td><strong>144 קומיטים מול 1</strong></td>
+<td>מדד מקצועיות ב-Git (L09)</td>
+</tr>
+<tr>
+<td><strong>~64 הרשאות</strong> אפשריות ל-Token של Google</td>
+<td>Gmail API (L09)</td>
+</tr>
+<tr>
+<td>Git — פותח ע"י <strong>Linus Torvalds, 2005</strong></td>
+<td>ניהול גרסאות (L09)</td>
+</tr>
+<tr>
+<td>Overfitting: סטודנט שלמד "בעל פה" מול "את החומר"</td>
+<td>(L01)</td>
+</tr>
+<tr>
+<td>טווח שליטה (Span of Control): <strong>8.1 (2013) → 12.1 (2025)</strong></td>
+<td>ההשטחה הגדולה (L04)</td>
+</tr>
+<tr>
+<td>ליזם נשאר <strong>~3%–5%</strong> אחרי דילול</td>
+<td>מימון סטארטאפ (L09)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="01-ai-n-">🟦 הרצאה 01 — AI כווקטורים במרחב N-ממדי</h1>
+<h2 id="_3">נקודות ליבה</h2>
+<ul>
+<li><strong>בינה מלאכותית (AI)</strong> = כל מכונה שיודעת להחליף פעולות של בני אדם (ולעיתים בעלי חיים).</li>
+<li><strong>למידת מכונה (Machine Learning)</strong> = ה"מוח" של ה-AI; היכולת ללמוד מנתונים קיימים (<strong>שיש</strong>) ולהסיק מסקנות על נתונים לא-ידועים (<strong>אין</strong>).</li>
+<li><strong>למידה עמוקה (Deep Learning)</strong> = תת-תחום המבוסס על <strong>רשת נוירונים מלאכותית</strong>, בהשראת נוירונים ביולוגיים במוח.</li>
+</ul>
+<h3 id="ml">ארבעה תחומי ML (טבלה)</h3>
+<table>
+<thead>
+<tr>
+<th>תחום</th>
+<th>תיאור</th>
+<th>דוגמה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>רגרסיה (Regression)</strong></td>
+<td>תחזית ערכים על בסיס נתונים קיימים</td>
+<td>חיזוי מחיר מניה</td>
+</tr>
+<tr>
+<td><strong>קלסיפיקציה (Classification)</strong></td>
+<td>סיווג לקטגוריות מוגדרות</td>
+<td>זיהוי חתול/כלב, זיהוי ספרות</td>
+</tr>
+<tr>
+<td><strong>למידת חיזוקים (Reinforcement Learning)</strong></td>
+<td>קבלת החלטות אדפטיבית תוך כדי תנועה</td>
+<td>ניהול רחפן, שחמט</td>
+</tr>
+<tr>
+<td><strong>גילוי אנומליות (Anomaly Detection)</strong></td>
+<td>זיהוי חריגה ממצב נורמלי</td>
+<td>אבטחה, פרצות סייבר</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">הרעיון המרכזי — הכול וקטור</h3>
+<ul>
+<li>כל מידע (טקסט, תמונה, קול, משפט) ניתן לייצוג כ<strong>סדרת מספרים</strong> = <strong>וקטור במרחב N-ממדי</strong>.</li>
+<li><strong>וקטור</strong> = סדרת מספרים; <strong>מימד הווקטור</strong> = כמות האיברים (פיצ'רים). כל וקטור = נקודה במרחב N-ממדי.</li>
+<li>תמונה 1000×1000 פיקסלים → וקטור במיליון מימדים.</li>
+<li><strong>קרבה בין נקודות = דמיון משמעותי; ריחוק = שוני.</strong> זהו הבסיס לכל פעולות ה-AI.</li>
+<li>"דוד הלך לטייל" → "משה הלך לטייל" (וקטור קרוב) מול "משה הלך לעולמו" (רחוק).</li>
+</ul>
+<h3 id="data">מושגי Data</h3>
+<table>
+<thead>
+<tr>
+<th>מושג</th>
+<th>הגדרה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data</strong></td>
+<td>נתונים הנמדדים מהמציאות (גובה, משקל, לחץ דם)</td>
+</tr>
+<tr>
+<td><strong>תיוג (Label)</strong></td>
+<td>הסיווג: 0 = לא מתאים, 1 = מתאים</td>
+</tr>
+<tr>
+<td><strong>Data Set</strong></td>
+<td>שילוב Data + תיוג — תנאי הכרחי לאימון</td>
+</tr>
+<tr>
+<td><strong>פיצ'ר (Feature)</strong></td>
+<td>תכונה בודדת נמדדת</td>
+</tr>
+<tr>
+<td><strong>סמפל (Sample)</strong></td>
+<td>שורה בודדת ב-Data Set (דגימה אחת)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="overfitting-">Overfitting (למידת-יתר)</h3>
+<p>מכונה (או סטודנט) שלמדה "בעל פה" את השאלות במקום להבין את החומר — תצליח רק בשאלות זהות, ותיכשל בתחזית אמיתית על נתונים חדשים.</p>
+<h3 id="_5">אבטחת מידע</h3>
+<p>כל שאלה שנשלחת ל-LLM ענן "יוצאת החוצה" ועלולה להיחשף ל-<strong>man-in-the-middle</strong>. שימוש במחשבי צבא עלול להיחסם.</p>
+<hr />
+<h1 id="03-cli-codex">🟦 הרצאה 03 — טרמינל (CLI) והתקנת Codex</h1>
+<h2 id="_6">נקודות ליבה</h2>
+<ul>
+<li><strong>טרמינל (Terminal)</strong> = הפעלת המחשב ב<strong>מקלדת בלבד</strong> — טקסט נכנס, טקסט יוצא. קיים מהיום הראשון של המחשוב, בכל מערכת הפעלה.</li>
+<li><strong>למה קריטי לסוכן?</strong> סוכן AI יודע <strong>רק לקרוא ולכתוב טקסט</strong> — לא להפעיל עכבר. הטרמינל הוא הגשר בין הסוכן למחשב.</li>
+<li><strong>CLI (Command Line Interpreter)</strong> = מודל שפה (LLM) שרץ <strong>מקומית</strong> בטרמינל (בניגוד לענן/דפדפן).</li>
+</ul>
+<h3 id="cli">כלי CLI לפי חברה</h3>
+<table>
+<thead>
+<tr>
+<th>חברה</th>
+<th>CLI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenAI (ChatGPT)</td>
+<td><strong>Codex</strong> (הכלי בשיעור)</td>
+</tr>
+<tr>
+<td>Anthropic (Claude)</td>
+<td>Claude Code</td>
+</tr>
+<tr>
+<td>Google (Gemini)</td>
+<td>Gemini CLI</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_7">פקודות טרמינל בסיסיות</h3>
+<table>
+<thead>
+<tr>
+<th>פעולה</th>
+<th>פקודה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ניווט לתיקייה</td>
+<td><code>cd &lt;folder&gt;</code></td>
+</tr>
+<tr>
+<td>יצירת תיקייה</td>
+<td><code>mkdir &lt;name&gt;</code></td>
+</tr>
+<tr>
+<td>הצגת תוכן</td>
+<td><code>dir</code></td>
+</tr>
+<tr>
+<td>ניקוי מסך</td>
+<td><code>cls</code></td>
+</tr>
+<tr>
+<td>יציאה</td>
+<td><code>exit</code></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>פרויקט = תיקייה.</strong> שורש המערכת: <code>C:\</code> ("אברהם אבינו" של התיקיות).</li>
+<li><strong>Windows: בקסלאש <code>\</code></strong> (לא סלאש <code>/</code> כמו לינוקס/מאק). פקודות <strong>Case Sensitive</strong>; זהירות ברווחים ומקפים.</li>
+</ul>
+<h3 id="4">4 תוכנות להתקנה (לפי סדר)</h3>
+<ol>
+<li><strong>PowerShell 7</strong> (טרמינל מודרני, אייקון שחור)</li>
+<li><strong>Notepad++</strong> (עורך Plain Text — נקי, ידידותי לסוכן)</li>
+<li><strong>Node.js</strong> ("תוכנה שמתקינה תוכנות") + <strong>npm</strong> (מנהל חבילות)</li>
+<li><strong>Codex CLI</strong>: <code>npm install -g @openai/codex</code></li>
+<li>(בשיעור הבא: <strong>Python 3.13</strong>)</li>
+</ol>
+<h3 id="_8">מושגים חשובים</h3>
+<ul>
+<li><strong>npm (Node Package Manager)</strong> — מתקין תוכנות מ-npmjs.com; מגיע עם Node.js.</li>
+<li>אחרי התקנת Node.js — <strong>חובה לסגור ולפתוח את הטרמינל</strong> (אחרת <code>node -v</code> לא יזוהה).</li>
+<li><strong>Authentication / OAuth 2.0</strong> — <code>codex login</code> פותח דפדפן, מאשרים, ו-Codex מקבל <strong>access token</strong>. מומלץ Google Sign-In.</li>
+<li><strong>Sandbox ("ארגז חול")</strong> — מצב הרצה מבודד עם הרשאות מצומצמות (בקורס: option 2).</li>
+<li><strong>Prompt Injection</strong> — ניצול זדוני; לכן Codex שואל "האם אתה סומך על התיקייה?".</li>
+<li><strong><code>/exit</code></strong> יוצא מ-Codex ונשאר בטרמינל; <strong><code>exit</code></strong> סוגר את הטרמינל.</li>
+<li><strong>תוכנה = ספר מתכונים</strong>; שפת תכנות = שפת המתכון. עובדים עם Python (לא לומדים לתכנת — הסוכן כותב).</li>
+</ul>
+<hr />
+<h1 id="04-ai-">⭐ הרצאה 04 — כלכלת ה-AI (ההרצאה הכי כבדת-מושגים!)</h1>
+<blockquote>
+<p>המרצה הדגיש: <strong>כל התוכן, כולל רשימת המקורות, הוא חומר מבחן.</strong> זהו "שיעור תיאורטי וניהולי רחב", לא כתיבת קוד.</p>
+</blockquote>
+<h2 id="13-">מילות מפתח (13 מושגי-על)</h2>
+<p>כלכלת AI · חברת העלות השולית האפסית (Zero Marginal Cost Society) · ויכוח החישוב הסוציאליסטי · סוכני AI אוטונומיים (Agentic AI) · ספר הטכנולוגיה המשונן (Jagged Technological Frontier) · דחיסת פריון (Productivity Compression) · גישת המשימות (Task-Based Approach) · פיצול המשטר / הון סוכנים (Regime Fork) · ההשטחה הגדולה וטווח שליטה (Great Flattening &amp; Span of Control) · כלכלת הקשב (Attention Economy) · מיסוי רובוטים אופטימלי (Optimal Robot Tax) · לאומנות טכנולוגית ומגן הסיליקון (Techno-Nationalism &amp; Silicon Shield) · תלות גומלין נשקית (Weaponized Interdependence).</p>
+<h2 id="_9">שתי הכלכלות הקלאסיות</h2>
+<table>
+<thead>
+<tr>
+<th>ממד</th>
+<th>כלכלה סוציאליסטית</th>
+<th>כלכלה קפיטליסטית (שוק)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>הקצאה</td>
+<td>תכנון מרכזי, חלוקה לפי צורך</td>
+<td>כוחות שוק, היצע וביקוש</td>
+</tr>
+<tr>
+<td>תמחור</td>
+<td>מחירים קבועים ע"י פקידים</td>
+<td>מחירים דינמיים: <strong>P → MC</strong></td>
+</tr>
+<tr>
+<td>כשל היסטורי</td>
+<td>כשל אפיסטמי, שחיתות, אי-יעילות</td>
+<td>אי-שוויון ומונופוליזציה</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>ויכוח החישוב הסוציאליסטי:</strong> פון מיזס + היאק הוכיחו שללא שוק חופשי אין חישוב כלכלי רציונלי; המידע הכלכלי <strong>מקומי, סובייקטיבי ומבוזר</strong> ולא ניתן לריכוז (Hayek, 1945).</li>
+</ul>
+<h2 id="-ai">כניסת ה-AI</h2>
+<ul>
+<li><strong>סוכן AI (Agentic AI)</strong> = ישות תוכנה אוטונומית המבצעת משימות מקצה-לקצה שדרשו מומחיות אנושית (חוזה שעלה ~$2500 → סנטים).</li>
+<li><strong>השפעה על עלות הייצור</strong> (3 סיבות): (1) זמינות 24/7; (2) <strong>Scalability</strong> — אינסוף סוכנים במקביל; (3) קצב למידה אקספוננציאלי.</li>
+<li><strong>מסקנה:</strong> בשוק תחרותי מבוסס-סוכנים, <strong>P → MC → 0</strong> (העלות השולית האפסית של Rifkin).</li>
+</ul>
+<h2 id="post-scarcity-economy">כלכלת האינסוף (Post-Scarcity Economy)</h2>
+<ul>
+<li>כשעלות השעתוק שואפת לאפס, מוצרים הופכים ל"מוצר כמו <strong>אוויר</strong>" — זמין לכל, חינם (כמו שיחות סלולר בעבר).</li>
+<li><strong>ספר הטכנולוגיה המשונן (Jagged Frontier, Dell'Acqua/HBS/BCG):</strong> גבול יכולת ה-AI לא אחיד ולא ישר. משימות בתוך הגבול — שיפור מרשים; מחוץ לגבול — נפילות והזיות. לכן <strong>Human-in-the-Loop</strong> קריטי.</li>
+</ul>
+<h2 id="_10">שבירת מעמדות הידע</h2>
+<ul>
+<li>הידע הסטטי (תארים, שנות ניסיון, ידע מקצועי סגור) מאבד מערכו כמקור כוח. הרופא/פרופ' עם 20 שנות ניסיון מול ילד בן 18 עם כלי AI.</li>
+<li><strong>דחיסת פריון (Productivity Compression, Noy &amp; Zhang, <em>Science</em>):</strong> ChatGPT הפחית זמן משימה ב-<strong>40%</strong> ושיפר איכות ב-<strong>18%</strong>. <strong>עובדים חלשים יותר נהנים הכי הרבה</strong> — הפער מול המומחים כמעט נסגר.</li>
+</ul>
+<h2 id="_11">רגולציה: מיסוי סוכנים (הפתרון המוצע)</h2>
+<ul>
+<li>הצעת סגל: <strong>מס על סוכני AI</strong> למימון תקופת המעבר (בהשראת מהפכת הלודיטים).</li>
+<li>מגובה ב-Guerreiro, Rebelo &amp; Teles (<em>Review of Economic Studies</em>): מיסוי רובוטים אופטימלי (מודל <strong>Mirrleesian</strong>) — <strong>מס למעבר בלבד</strong>, שואף לאפס בסיום. ביקורת נגד: <strong>ITIF</strong> (מסי רובוט פוגעים בחדשנות).</li>
+</ul>
+<h2 id="_12">עיצוב ארגוני חדש — ההשטחה הגדולה</h2>
+<ul>
+<li><strong>קריסת הפירמידה הקלאסית</strong> (מנכ"ל → מנהלי ביניים → עובדי ביצוע). בסיס הפירמידה (עובדים טכניים) מוחלף ראשון.</li>
+<li>שני מודלים: <strong>טרפז שטוח</strong> (היררכיה אפסית) ו<strong>טרפז הפוך</strong> (בסיס מבוצע ע"י סוכנים, נשארים מנהלים).</li>
+<li><strong>ההשטחה הגדולה (Deloitte, 2025):</strong> טווח שליטה (Span of Control) עלה מ-<strong>8.1 (2013) ל-12.1 (2025)</strong>.</li>
+<li><strong>פיצול המשטר / הון סוכנים (Farach, 2026):</strong> משטר תשתית כללית (שוויוני) מול משטר משלימות עילית ("סופרסטאר", ריכוזיות קיצונית).</li>
+</ul>
+<h2 id="attention-economy">המטבע החדש: כלכלת הקשב (Attention Economy)</h2>
+<ul>
+<li>כשמידע זמין וזול, המשאב הנדיר הוא <strong>תשומת הלב</strong> (Simon 1971; Davenport &amp; Beck).</li>
+<li>אקדמיה: ציטוטים · רשתות (TikTok/YouTube): עוקבים/לייקים · בידור (Netflix): זמן צפייה.</li>
+</ul>
+<h2 id="-ai-3-">תפקיד המנהל בעידן ה-AI (3 אתגרי-על)</h2>
+<ol>
+<li><strong>יצירת משמעות ושייכות</strong> — כשהכסף אינו המניע היחיד.</li>
+<li><strong>מניעת התבדרות</strong> — עובד עם סוכן אינסופי מסתעף; המנהל "מכוון הווקטור הארגוני".</li>
+<li><strong>סגירת פערים ושימוש דינמי</strong> — Noy &amp; Zhang: פעם נדרשו 5 יחידות מתמטיקה; היום כולם יכולים.</li>
+</ol>
+<h2 id="_13">תרחיש גיאופוליטי (המחשה, לא נבואה)</h2>
+<ul>
+<li><strong>פרדוקס פיזי:</strong> כלכלת אינסוף דיגיטלי נשענת על <strong>נדירות פיזית</strong> — אנרגיה (חשמל) ושבבים.</li>
+<li><strong>מגן הסיליקון (Silicon Shield):</strong> תלות עולמית ב-<strong>TSMC (90%+ מהשבבים המתקדמים)</strong> = ביטוח לטייואן.</li>
+<li><strong>תלות גומלין נשקית (Weaponized Interdependence, Farrell &amp; Newman):</strong> מעצמות משתמשות בצווארי בקבוק של שרשראות הערך ככלי כפייה.</li>
+<li><strong>לאומנות טכנולוגית:</strong> חוק השבבים האמריקאי (CHIPS Act), בקרת ייצוא ASML/TSMC.</li>
+</ul>
+<h2 id="_14">המלצות מעשיות</h2>
+<ul>
+<li><strong>מיפוי עצמי</strong> של רכיבי עבודה (טכני-שגרתי → יוחלף ב-AI).</li>
+<li><strong>כלל הזהב:</strong> צא מאזור הנוחות, למד נושא חדש כל יום — <strong>הגמישות המחשבתית = תעודת הביטוח היחידה</strong>.</li>
+<li><strong>TikTok ככלי לימוד</strong> — סרטונים מזוקקים 1–3 דק' (עם סינון חזק).</li>
+</ul>
+<hr />
+<h1 id="05-vibe-coding">🟦 הרצאה 05 — Vibe Coding בפייתון</h1>
+<h2 id="_15">נקודות ליבה</h2>
+<ul>
+<li><strong>Vibe Coding</strong> = כתיבת קוד בשפה חופשית (טבעית), <strong>בלי לדעת תכנות</strong> — ה-AI מייצר את קוד הפייתון.</li>
+<li><strong>המשל:</strong> Python הוא <strong>המנוע</strong> של הרכב — בלעדיו הקוד לא ירוץ.</li>
+</ul>
+<h3 id="_16">⭐ ארבעת השלבים (סדר קריטי!)</h3>
+<ol>
+<li><strong>הגדרת המשימה בצ'אט</strong> (שפה חופשית + "תסביר איך להריץ")</li>
+<li><strong>העתקת הקוד</strong> (<code>Ctrl+C</code>)</li>
+<li><strong>שמירה ב-Notepad++</strong> כקובץ <code>.py</code> (חובה סיומת, בלי רווחים)</li>
+<li><strong>הרצה ב-PowerShell</strong>: <code>python &lt;filename&gt;.py</code></li>
+</ol>
+<h3 id="_17">כלים ופקודות</h3>
+<ul>
+<li>בדיקת פייתון: <code>python --version</code> · הרצה: <code>python file.py</code> · אימות קובץ: <code>dir</code>/<code>ls</code></li>
+<li>תרגיל Hello World: <code>print("Hello")</code> · פרויקט מרכזי: <strong>שעון אנלוגי</strong> בספרייה הגרפית <strong>Turtle</strong>.</li>
+<li>תיקיות פרויקט: <code>C:\201</code> (קבוצה א') / <code>C:\101</code> (קבוצה ב').</li>
+</ul>
+<h3 id="_18">שני מסלולי עבודה</h3>
+<ol>
+<li><strong>דרך הדפדפן:</strong> צ'אט → Notepad++ → PowerShell (שלוש תוכנות).</li>
+<li><strong>דרך הטרמינל (Claude Code/Codex):</strong> הכל במקום אחד — יתרון מרכזי.<br />
+- לטרמינל: כתוב בעברית → תרגם ב-<strong>Google Translate</strong> לאנגלית → הדבק.</li>
+</ol>
+<h3 id="_19">פתרון בעיות</h3>
+<ul>
+<li>טקסט הפוך → העתק לצ'אט ובקש תיקון.</li>
+<li><strong>"כעסו על ה-AI"</strong> — הפנו ביקורת, בקשו תיקון, בצעדים קטנים ("מרוב עצים לא רואים את היער").</li>
+</ul>
+<hr />
+<h1 id="06-ai">🟦 הרצאה 06 — שרשרת אספקה מבוססת AI (תאוריה)</h1>
+<h2 id="_20">נקודות ליבה</h2>
+<ul>
+<li>שימוש ב-AI = <strong>הכרח, לא פריבילגיה</strong> ("פורמולה 1 מול סוס ועגלה").</li>
+<li>כלים מסורתיים (Excel, ERP) — <strong>איטיים ומאוחרים מדי</strong>. "מכפיל 16": מ-100 שורות קוד ל-10,000.</li>
+</ul>
+<h3 id="ai">⭐ כלכלת AI חיובית מול שלילית</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>שלילית</th>
+<th>חיובית</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>מהות</td>
+<td>AI סגור, ללא בקרה</td>
+<td>תמיד <strong>אדם בלולאה (Man in the Loop)</strong></td>
+</tr>
+<tr>
+<td>האדם</td>
+<td>מוצא מהמשוואה</td>
+<td>מתווך, מבקר, אחראי</td>
+</tr>
+<tr>
+<td>- <strong>"אם אתה לא שם — אתה לא קיים".</strong> לעולם אל תיקח תוצר כמו שהוא ותשלח.</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>- ה-AI הוא <strong>כלי עבודה, לא תחליף</strong> (כמו טרקטור לחקלאי). את תחום המומחיות שלך — אל תמסור לצ'אט (הגרפיקאית / עורך הדין עם התקדימים המומצאים).</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="llm">כיצד עובד LLM</h3>
+<ul>
+<li>ה-LLM הוא <strong>"מוח"</strong> — יודע <strong>סטטיסטיקה, לא חשבון</strong>. מחזיר את מה שהופיע הכי הרבה ("דוד מלך..." → "ישראל").</li>
+<li><strong>הזיות (Hallucinations)</strong> — המצאת מידע לא נכון. הטל ספק — נראה ~90% אמין.</li>
+</ul>
+<h3 id="training-inference">⭐ Training מול Inference</h3>
+<table>
+<thead>
+<tr>
+<th>אימון (Training)</th>
+<th>הסקה (Inference)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>היצרן מריץ על כל האינטרנט, לומד תבניות</td>
+<td>המשתמש מכוון מודל מאומן לתשובה (פרומפט)</td>
+</tr>
+<tr>
+<td>- לכל מודל <strong>תאריך תוקף</strong>; מידע עדכני דורש <strong>מודל מאומן + חיפוש באינטרנט</strong>.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="chat-agent">⭐ Chat מול Agent</h3>
+<table>
+<thead>
+<tr>
+<th>שיחה (Chat)</th>
+<th>סוכן (Agent)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>שאלה-תשובה מול ה"מוח"</td>
+<td>מקבל <strong>מטרה</strong>, מפרק לתת-משימות, מפעיל <strong>כלים (Tools)</strong> ומבצע</td>
+</tr>
+<tr>
+<td>- הסוכן <strong>חותר למטרה</strong> אוטונומית; <strong>חייב אדם בלולאה</strong> (אנלוגיית המטווח — 3 כדורים ובדיקה).</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4_1">⭐ הנדסת פרומפטים — 4 כללים</h3>
+<ol>
+<li><strong>הגדרת תפקיד</strong> ("התנהג כמומחה ללוגיסטיקה" / כאיש מקצוע ידוע).</li>
+<li><strong>שפה חופשית + תבנית JSON</strong> (דיוק ותקשורת בין סוכנים — דוגמת הסלון והספה עם <strong>Nano Banana</strong>).</li>
+<li><strong>מתן דוגמה</strong> (הובלה בשביל הנכון ביער).</li>
+<li><strong>בקשת ביקורתיות</strong> — חפש "<strong>חריגות</strong>" ולא "התאמה".<br />
+- <strong>ועדת מומחים</strong> — הקם ועדה וירטואלית, שחק "פינג-פונג" בין צ'אטים.</li>
+</ol>
+<h3 id="_21">פרטיות והרצה מקומית</h3>
+<ul>
+<li><strong>On-Prem / Ollama</strong> — הרצת מודל מקומית ("נגן" ל-LLM); מורידים מ-<strong>Hugging Face</strong>. יתרון: אין עלות טוקנים, מידע נשאר בבית; חיסרון: יקר (~10–20 אלף ש"ח / שרת $50K) + System Admin. מרוויחה: <strong>Nvidia</strong>.</li>
+</ul>
+<h3 id="2026">⭐ השוואת מודלים 2026</h3>
+<table>
+<thead>
+<tr>
+<th>מודל</th>
+<th>התמחות</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Claude</strong></td>
+<td>אלוף כתיבת קוד; אמין; קונטקסט רחב</td>
+</tr>
+<tr>
+<td><strong>Grok</strong></td>
+<td>מסמכים גדולים + לוגיקה; קשרים רחוקים</td>
+</tr>
+<tr>
+<td><strong>Gemini</strong></td>
+<td>אלוף מולטימדיה (Nano Banana, Avatar)</td>
+</tr>
+<tr>
+<td><strong>ChatGPT</strong></td>
+<td>חלוץ שנותר מאחור; נדיב בחינם</td>
+</tr>
+<tr>
+<td><strong>Perplexity</strong></td>
+<td>מנוע חיפוש אולטימטיבי; עדכני</td>
+</tr>
+<tr>
+<td><strong>Manus</strong></td>
+<td>אלוף מצגות; רץ בענן ($300/חודש)</td>
+</tr>
+<tr>
+<td><strong>סינים (Qwen, DeepSeek)</strong></td>
+<td>חזקים וזולים; חשש הבטחת מידע</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>דוגמת שאלת מבחן מהמרצה:</strong> "איזה פורמט מתאים לשיחה בין שני סוכנים?" → <strong>JSON</strong>.</p>
+</blockquote>
+<hr />
+<h1 id="07">🟦 הרצאה 07 — תרגול מעשי בשרשרת אספקה (בדפדפן)</h1>
+<h2 id="_22">נקודות ליבה</h2>
+<ul>
+<li>עבודה מתוך <strong>הדפדפן</strong> (לא טרמינל): מעלים קבצים, שואלים, מקבלים סיכום. אין צורך בקוד.</li>
+<li>⭐ <strong>סשן חדש לכל משימה (New Chat)</strong> — כל משימה = מקרה נפרד; ערבוב = "רעש" ("בשר בחלב").</li>
+<li><strong>בחירת קבצים רלוונטיים</strong> — בכוונה יש יותר קבצים מהנדרש; צירוף לא-רלוונטי מבלבל את המודל.</li>
+<li>⭐ <strong>אל תצרף את שקף המצגת</strong> למודל — הוא לרקע הלומד בלבד; המודל מקבל רק <strong>מסמכי המקרה</strong>.</li>
+</ul>
+<h3 id="_23">שלושה רובדי למידה</h3>
+<ol>
+<li><strong>טכני</strong> (העתק-הדבק-Enter) 2. <strong>אימות וביקורת</strong> ("זה לא נכון, תתקן") 3. <strong>פרסונות</strong> (Act as).</li>
+</ol>
+<h3 id="_24">⭐ אימות ואחריות מקצועית</h3>
+<p><strong>אתם חתומים על התשובה.</strong> המודל <strong>מאיץ</strong> אך לא מחליף שיקול דעת. אל תניחו שהמודל צודק.</p>
+<h3 id="_25">דוגמה מרכזית — עיכוב משלוח</h3>
+<ul>
+<li>מסמך מפתח: <strong>מדיניות הטיפול בעיכובים (Delay Response Policy)</strong>.</li>
+<li>שתי רמות: <strong>השלכה מקומית</strong> מול <strong>אפקט שרשרת</strong> (משלוחים נוספים "בקנה").</li>
+<li>תוצר: סיכום 3 משפטים, SKUs בסיכון, 3 חלופות, <strong>טבלת החלטה</strong> (פעולה/עלות/שירות/סיכון/אישור).</li>
+</ul>
+<h3 id="_26">מונחים</h3>
+<p>Incoterms (תנאי סחר בינ"ל) · SLA · רב-מודלי (Multimodal) · ETA · ROI · Share Link (הגשה בפרטי בצ'אט Zoom).</p>
+<hr />
+<h1 id="08-skills">⭐ הרצאה 08 — Skills וחלון הקשר (הכי טכנית)</h1>
+<h2 id="weng-2023">⭐ ארבעת מרכיבי הסוכן (Weng, 2023)</h2>
+<table>
+<thead>
+<tr>
+<th>מרכיב</th>
+<th>תפקיד</th>
+<th>מונח אקדמי</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LLM</strong></td>
+<td>קבלת החלטות, תכנון</td>
+<td>ליבת היסק (Brain)</td>
+</tr>
+<tr>
+<td><strong>חלון הקשר (Context Window)</strong></td>
+<td>זיכרון עבודה</td>
+<td>זיכרון קצר-טווח (Working Memory)</td>
+</tr>
+<tr>
+<td><strong>כלים (Tools)</strong></td>
+<td>ביצוע פעולות</td>
+<td>API חיצוני</td>
+</tr>
+<tr>
+<td><strong>מאגר ידע (RAG)</strong></td>
+<td>מסמכים ונהלים</td>
+<td>זיכרון חיצוני ארוך-טווח</td>
+</tr>
+<tr>
+<td>&gt; <strong>RAG אינו רכיב קוגניטיבי נפרד</strong> — הוא יישום של זיכרון ארוך-טווח + כלי אחזור (Retriever).</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_27">טוקנים וחלון הקשר</h2>
+<ul>
+<li><strong>טוקן</strong> ≈ <strong>0.75 מילה</strong> באנגלית (מילה ≈ 1.3 טוקן). חלון: <strong>200K → מיליון</strong> טוקנים.</li>
+<li><strong>⭐ "אובדן באמצע" (Lost in the Middle, Liu et al. 2024):</strong> דיוק גבוה ב<strong>קצוות</strong> (Primacy + Recency), נמוך במרכז — <strong>עקומת U</strong>. מקם מידע קריטי בקצוות.</li>
+<li><strong>⭐ סיבוכיות O(N²)</strong> — מנגנון הקשב העצמי (Self-Attention) ב-Transformer ריבועי ב-N (מס' טוקנים). שיחות ארוכות → יקרות ואיטיות → <strong>"ריקבון הקשר" (Context Rot)</strong>.</li>
+</ul>
+<h3 id="_28">⭐ שלוש אסטרטגיות ניהול + פקודות</h3>
+<table>
+<thead>
+<tr>
+<th>פקודה</th>
+<th>פעולה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>/clear</code></strong></td>
+<td>מאפס את החלון, סשן חדש (מאבד זיכרון עבודה)</td>
+</tr>
+<tr>
+<td><strong><code>/compact</code></strong></td>
+<td>דוחס לתמצית <strong>באותו סשן</strong> (Lossy — מאבד ניואנסים)</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>משחזר שיחה קודמת</td>
+</tr>
+<tr>
+<td><code>/rename</code></td>
+<td>נותן שם לשיחה</td>
+</tr>
+<tr>
+<td>&gt; סגירת המחשב <strong>אינה</strong> מאפסת את הסשן.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-token-tax">⭐ מס הטוקנים (The Token Tax)</h2>
+<ul>
+<li><strong>פוריות (Fertility) F = Tokens/Words:</strong> אנגלית ≈ <strong>1.3</strong>, עברית ≈ <strong>3.25</strong> (פי ~2.5). הסיבה: אלגוריתם <strong>BPE</strong> מאומן על אנגלית → מפרק עברית ל"רסיסים".</li>
+<li><strong>ארבעה מיסים:</strong> פיננסי (פי 2.5) · חישובי (O(N²)) · קיבולת קוגניטיבית (חלון מתמלא מהר) · דיוק (עולה הזיות).</li>
+<li><strong>המלצה:</strong> לעבוד באנגלית כקלט, לתרגם לעברית רק בפלט.</li>
+</ul>
+<h2 id="graphrag-edge-et-al-2024-microsoft">⭐ GraphRAG (Edge et al. 2024, Microsoft)</h2>
+<ul>
+<li>ייצוג ידע כ<strong>גרף</strong> (צמתים/קשתות) + <strong>גילוי קהילות</strong> (Leiden/k-core) + סיכום היררכי.</li>
+<li>RAG וקטורי נכשל בשאילתות <strong>גלובליות</strong> (Flat chunks); GraphRAG חוסך <strong>עד 90%</strong> טוקנים.</li>
+</ul>
+<h2 id="_29">תזמור סוכנים</h2>
+<ul>
+<li><strong>Flat Mesh</strong> (מבוזר-שטוח) — כשלים: Coordination Overhead, Context Fragmentation ("טלפון שבור"), Review Thrashing.</li>
+<li><strong>תזמור היררכי (OrgAgent):</strong> שכבות משילות (CEO Agent) / ביצוע (Coder) / תאימות (CCO Agent).</li>
+</ul>
+<h2 id="skillmd">⭐ תקן SKILL.md</h2>
+<ul>
+<li><strong>מיומנות (Skill)</strong> = תיקייה עם <code>SKILL.md</code>, מקנה <strong>תפקיד ומומחיות</strong> (שכפול הצלחות, לא "לוח חלק"/Tabula Rasa).</li>
+<li>מבנה דו-שכבתי: <strong>Frontmatter (YAML)</strong> — שדה <strong>Description</strong> = מנגנון הניתוב האוטונומי; + <strong>גוף Markdown</strong> (הוראות + דוגמאות Few-shot).</li>
+<li><strong>גילוי הדרגתי (Progressive Disclosure):</strong> רמה 1 מטא-נתונים (תמיד) → רמה 2 הנחיות (בהפעלה) → רמה 3 משאבים (בביצוע).</li>
+</ul>
+<h3 id="_30">סוכן מול מיומנות מול פקודה</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>אנלוגיה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>סוכן (Agent)</strong></td>
+<td>המוח (Brain)</td>
+</tr>
+<tr>
+<td><strong>מיומנות (Skill)</strong></td>
+<td>הידיים (Hands)</td>
+</tr>
+<tr>
+<td><strong>פקודה (Command)</strong></td>
+<td>קיצור מקלדת (<code>/clear</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="raisch-krakowski-2021">פרדוקס אוטומציה–אוגמנטציה (Raisch &amp; Krakowski 2021)</h2>
+<ul>
+<li><strong>אוטומציה</strong> (החלפת האדם) מול <strong>אוגמנטציה</strong> (שיתוף אדם–מכונה, "טייס משנה"/Copilot).</li>
+<li>אוטומציה מלאה → <strong>שחיקת מומחיות (Skill Degradation)</strong>. המסר: <strong>"מינוף ולא תחליף"</strong>.</li>
+</ul>
+<hr />
+<h1 id="09-git-github-gmail-api">🟦 הרצאה 09 — Git / GitHub + Gmail API + יזמות</h1>
+<h2 id="ai_1">מטלת הבונוס — סוכן AI אישי</h2>
+<ul>
+<li>עוזר שמתחבר ל-Google, סורק Gmail, מזהה <strong>זימון לפגישה בשפה חופשית</strong> (לא Rule-based/מילת מפתח!), מחלץ תאריך/שעה/מקום, ומכניס ל-Google Calendar.</li>
+<li>3 יכולות ליבה: <strong>תפיסה (Perception) · חשיבה (Reasoning) · הפעלה (Action)</strong>.</li>
+</ul>
+<h2 id="google">דיבור עם Google</h2>
+<table>
+<thead>
+<tr>
+<th>מונח</th>
+<th>הגדרה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>API</strong></td>
+<td>שפת תקשורת מוגדרת בין שני מחשבים</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>הרכיב שמדבר עם Google, מעביר את ה-Token</td>
+</tr>
+<tr>
+<td><strong>Token</strong></td>
+<td>מחזיק את ההרשאות (scopes) — ~64 אפשריות. (<strong>לא</strong> טוקן של LLM!)</td>
+</tr>
+<tr>
+<td><strong>OAuth 2.0</strong></td>
+<td>פרוטוקול; 4 תפקידים: Resource Owner, Client, Authorization Server, Resource Server</td>
+</tr>
+<tr>
+<td>- <strong>עקרון ההרשאה המינימלית</strong> (least privilege). המודל <strong>אינו</strong> יכול לייצר Client/Token (אישיים) — חובה ידנית. גם <strong>API Key</strong>. הכל <strong>בחינם</strong> (דרישת תשלום = טעות בהוראות).</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="git-github">⭐ Git ו-GitHub</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Git</strong></td>
+<td>ניהול גרסאות <strong>מבוזר (DVCS)</strong>; Linus Torvalds, 2005</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>פלטפורמת אירוח ענן ("Google Drive של תוכנות") + Pull Requests</td>
+</tr>
+<tr>
+<td><strong>Repository</strong></td>
+<td>פרויקט (תיקייה) תחת Git</td>
+</tr>
+<tr>
+<td><strong>Branch / Merge</strong></td>
+<td>ענף פיתוח מקבילי / מיזוג ענפים (מ-<strong>main</strong>/master)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_31">⭐ שלוש פקודות היסוד</h3>
+<table>
+<thead>
+<tr>
+<th>פקודה</th>
+<th>פעולה</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Commit</strong></td>
+<td>שמירה <strong>מקומית</strong> + הסבר מה נעשה</td>
+</tr>
+<tr>
+<td><strong>Push</strong></td>
+<td>דחיפה (העלאה) מהמחשב → לענן</td>
+</tr>
+<tr>
+<td><strong>Pull</strong></td>
+<td>משיכה (הורדה) מהענן → למחשב</td>
+</tr>
+<tr>
+<td>- <strong>שיטת המדרגות:</strong> Commit בכל הצלחה קטנה. <strong>144 קומיטים = מקצועי; קומיט אחד = הכי לא מקצועי.</strong> מספר הקומיטים = פרוקסי למקצועיות.</td>
+<td></td>
+</tr>
+<tr>
+<td>- <strong>Public מול Private:</strong> ריפו ציבורי = "תעודת זהות" מקצועית (LinkedIn/ראיונות). ניתן להוריד ולא לשנות מקור.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="_32">⭐ מחזור חיי פיתוח (סדר!)</h2>
+<p><strong>PRD → Plan → To-Do → README</strong> (הכל ב-Markdown)<br />
+| מסמך | תיאור |<br />
+|---|---|<br />
+| <strong>PRD</strong> (Product Requirement Document) | מה התוכנה צריכה לעשות (עד ~400 עמ') |<br />
+| <strong>Plan</strong> | סדר פעולות וחלוקה למודולים |<br />
+| <strong>To-Do</strong> | משימות אטומיות (~200, Checkboxes) — "ספר בישול" |<br />
+| <strong>README</strong> | מה הפרויקט עושה + הרצה + צילומי מסך |<br />
+- אומרים לסוכן <strong>לממש את ה-To-Do</strong> ולסמן Check (שליטה מלאה). <strong>CI/CD</strong> — סוכן בדיקות לילי.</p>
+<h2 id="_33">יזמות</h2>
+<ul>
+<li><strong>Moat (חפיר)</strong> — יתרון תחרותי בר-קיימא; נבנה ע"י <strong>המון משתמשים</strong>. אקדמי: <strong>RBV</strong> + <strong>VRIN</strong> (Valuable/Rare/Inimitable/Non-substitutable). דוגמת <strong>Waze</strong>.</li>
+<li><strong>אסטרטגיית ה"חינם":</strong> מתחילים בחינם, אוספים משתמשים (Google/Meta/WhatsApp). תואם <strong>The Lean Startup</strong> (MVP).</li>
+<li><strong>מימון:</strong> <strong>Angel</strong> (ראשון, משפחה) → <strong>Seed</strong>. <strong>דילול (Dilution)</strong> — ליזם נשאר ~3%–5%. <strong>Unicorn</strong> = מיליארד $. הרכב הקמה: איש טכני + בעל רעיונות + מנהל/מאכר.</li>
+</ul>
+<hr />
+<h1 id="10-ai">🟦 הרצאה 10 — מולטימדיה עם סוכני AI</h1>
+<h2 id="_34">נקודות ליבה</h2>
+<ul>
+<li><strong>מחסום הכלי המורכב:</strong> פער בין <strong>כוונה</strong> ("חבר וידאו לקצב") ל<strong>ביצוע טכני</strong> (פקודת FFmpeg). הפתרון: עטיפת הכלי ב<strong>מיומנות</strong> בשפה טבעית.</li>
+<li><strong>⭐ וידאו = מיכל (Container)</strong> — לרוב <strong>MP4</strong> (ISO/IEC 14496-14). בתוכו <strong>ערוצים (Tracks):</strong> תמונות, שמע, כתוביות. כל ערוץ ניתן להכפלה (רב-לשוני).</li>
+<li><strong>סנכרון:</strong> <strong>חותם זמן (Timestamp)</strong> מלכד את הערוצים; עריכה = הזזת תכנים על ציר הזמן.</li>
+</ul>
+<h3 id="audio-leads">⭐ מודל "השמע מוביל" (Audio-leads)</h3>
+<ul>
+<li>בקליפ, <strong>ערוץ השמע קובע את הקצב</strong>, השאר מיישרים אליו ("כמו חיילים לתוף"). במצגת מוקלטת — <strong>התמונות מובילות</strong>.</li>
+<li><strong>~90%</strong> מהקטעים נלווה שמע → <strong>השתקה</strong> לפני הרכבה.</li>
+<li><strong>מקצב 4/4</strong> = 4 רבעים ל<strong>בית מקצב (Bar)</strong>. החלפת תמונה בכל בית = "וידאו ארט"; בכל <strong>ביט</strong> = פי 4 מהיר.</li>
+<li>זיהוי ביטים אוטומטי: <strong>librosa</strong> (<code>beat_track</code> → tempo ב-<strong>BPM</strong> + נקודות חיתוך). רץ <strong>מקומית</strong> — לא מבזבז טוקנים.</li>
+</ul>
+<h3 id="ffmpeg">FFmpeg והסוכן</h3>
+<ul>
+<li><strong>FFmpeg</strong> = מנוע עריכה טקסטואלי (חיתוך/הדבקה/השתקה). המיומנות (תוכנית Python) מתרגמת שפה טבעית לפקודת FFmpeg ומסתירה אותה. החלפת מנוע → עדכון המיומנות בלבד.</li>
+<li><strong>⭐ סוכן CLI מקומי מול צ'אט דפדפן:</strong> המקומי <strong>ניגש לקבצים ומריץ FFmpeg</strong>; הדפדפן יכול <strong>לכתוב</strong> פקודה אך <strong>לא להריצה</strong>.</li>
+<li>⭐ <strong>כלכלת טוקנים:</strong> המודל <strong>"מנצח" בלבד</strong> (פקודות קצרות) ולא מייצר את המדיה הכבדה → זול. עלות הנמקה <strong>ריבועית</strong> באורך הרצף.</li>
+</ul>
+<h3 id="8">צינור ההפקה (8 שלבים)</h3>
+<p>Lyrics (מנוקד! ≤60 שנ') → Style JSON → <strong>Suno.AI</strong> → הורדת MP3 → הוספת תמונות מושתקות → פתיחת CLI בתיקייה → פרומפט "השמע מוביל, FFmpeg" → תוצר .mp4.<br />
+- <strong>היגיינת פרויקט:</strong> הכל בתיקייה אחת (<code>C:/101</code>). פרט אישי מדויק &gt; ברכה כללית (שיר המדחס).</p>
+<h3 id="agentic-os">חזון: Agentic OS</h3>
+<ul>
+<li>מעבר מ<strong>מערכת ממוקדת-יישומים (App-centric)</strong> ל<strong>ממוקדת-כוונה (Intent-based)</strong> — סוכן יחיד מתזמר כלים.</li>
+<li><strong>עטיפת כלים (Tool Wrapping):</strong> Blender, LaTeX/MiKTeX, CAD/OpenSCAD, R.</li>
+<li><strong>MCP (Model Context Protocol):</strong> תקן פתוח לחיבור סוכנים לכלים ומקורות — "חותך" את תלות ה-GUI.</li>
+</ul>
+<hr />
+<h1 id="_35">📝 מאגר שאלות תרגול (מדגם)</h1>
+<blockquote>
+<p>יש 80 שאלות תרגול מלאות (8 לכל הרצאה) — הנה מדגם. בקש ממני עוד/מבחן מלא בכל עת.</p>
+</blockquote>
+<p><strong>1 (L01).</strong> תמונת 1000×1000 פיקסלים מיוצגת כ...? → <strong>וקטור במיליון מימדים (נקודה במרחב מיליון-ממדי).</strong></p>
+<p><strong>2 (L04).</strong> לפי מודל השוק מבוסס-סוכנים, לאן שואף מחיר מוצרי מידע? → <strong>P → MC → 0</strong> (העלות השולית האפסית).</p>
+<p><strong>3 (L06).</strong> איזה פורמט מתאים לשיחה בין שני סוכנים? → <strong>JSON.</strong></p>
+<p><strong>4 (L06).</strong> ההבדל בין Chat ל-Agent? → <strong>סוכן מקבל מטרה, מפרק לתת-משימות ומבצע פעולות בעזרת כלים; שיחה = שאלה-תשובה בלבד.</strong></p>
+<p><strong>5 (L08).</strong> סיבוכיות מנגנון הקשב? → <strong>O(N²) ריבועית.</strong></p>
+<p><strong>6 (L08).</strong> פוריות טוקניזציה עברית מול אנגלית? → <strong>~3.25 מול ~1.3 (פי ~2.5), בגלל BPE.</strong></p>
+<p><strong>7 (L08).</strong> ההבדל בין <code>/clear</code> ל-<code>/compact</code>? → <strong><code>/clear</code> מאפס סשן חדש; <code>/compact</code> דוחס תמצית באותו סשן (Lossy).</strong></p>
+<p><strong>8 (L09).</strong> סדר מחזור הפיתוח? → <strong>PRD → Plan → To-Do.</strong></p>
+<p><strong>9 (L09).</strong> ההבדל בין Push ל-Pull? → <strong>Push מעלה למחשב→ענן; Pull מוריד מענן→מחשב.</strong></p>
+<p><strong>10 (L10).</strong> מה המשמעות של <code>.mp4</code>? → <strong>שם המיכל (Container) המכיל ערוצים — לא "תמונות נעות".</strong></p>
+<hr />
+<h2 id="_36">✅ צ'קליסט לפני המבחן</h2>
+<ul>
+<li>[ ] לשלוט ב<strong>מונחים דו-לשוניים</strong> (עברית + אנגלית) — המבחן עתיר-מונחים.</li>
+<li>[ ] לזכור את <strong>טבלת המספרים</strong> למעלה בעל-פה (חוסך זמן חיפוש).</li>
+<li>[ ] להבין <strong>ההבדלים</strong> החוזרים: Chat/Agent · Training/Inference · Automation/Augmentation · Public/Private · Push/Pull/Commit · <code>/clear</code>/<code>/compact</code>.</li>
+<li>[ ] הרצאה <strong>04</strong> (כלכלת AI) — לחזור פעמיים, הכי כבדת-מושגים.</li>
+<li>[ ] להדפיס מדריך זה + הסיכומים המקוריים ולהביא למבחן (חומר פתוח).</li>
+<li>[ ] לתרגל עם בנק השאלות של המרצה ב-NotebookLM, ולמדוד זמן (10 שאלות).</li>
+</ul>
+<p><strong>בהצלחה! 🎓</strong></p></div></body></html>
