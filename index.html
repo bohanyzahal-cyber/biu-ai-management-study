@@ -494,7 +494,7 @@ topics.forEach(t=>{
   grid.appendChild(c);
 });
 const cSim=card(`<span class="tag">🎯 סימולציית מבחן</span><h3>מבחן מלא (SPEED TEST)</h3><p>180 שאלות · עונים על 60 · 90 דקות · נוסחת ציון — בדיוק כמו בבחינה</p><div class="foot"><span>180 שאלות</span>${bestChip("exam")}</div>`);
-cSim.className="card special";cSim.onclick=()=>startExam();
+cSim.className="card special";cSim.onclick=()=>examIntro();
 grid.appendChild(cSim);
 const cAll=card(`<span class="tag">מרתון</span><h3>כל השאלות</h3><p>כל בנק השאלות ברצף אחד, בסדר אקראי</p><div class="foot"><span>${ALL.length} שאלות</span>${bestChip("all")}</div>`);
 cAll.className="card special";cAll.onclick=()=>start(shuffle(ALL),"כל השאלות","all");
@@ -579,6 +579,36 @@ function results(){
   document.getElementById("home2").onclick=backHome;
 }
 /* ---------- exam simulation (SPEED TEST: 180 Q, answer 60, 90 min) ---------- */
+function examIntro(){
+  clearInterval(examTimerId);examTimerId=null;
+  home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);
+  document.getElementById("qMeta").textContent="הוראות המבחן";
+  document.getElementById("pfill").style.width="0%";
+  stage.innerHTML=`
+    <div class="qcard" style="max-width:700px;margin:0 auto">
+      <div class="qnum">🎯 סימולציית מבחן · SPEED TEST</div>
+      <p class="qtext" style="font-size:19px;margin-bottom:14px">קרא את ההוראות לפני שמתחילים</p>
+      <div style="font-size:15px;line-height:1.7;display:flex;flex-direction:column;gap:9px;text-align:right">
+        <div>📋 <b>180 שאלות</b> — אתה בוחר לענות רק על <b>60</b> (המינימום לציון 100 מלא).</div>
+        <div>⏱ <b>90 דקות</b>. אפשר <b>לדלג</b> בחופשיות ולחזור אחורה. הכפתור "סיים והגש" זמין בכל רגע.</div>
+        <div>🧮 <b>ציון = נכונות ÷ max(מספר שענית, 60) × 100.</b></div>
+        <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:13px 15px">
+          <b style="color:var(--accent)">אסטרטגיה מנצחת:</b>
+          <div style="margin-top:7px">✅ <b>ענה רק על שאלות שאתה בטוח בהן.</b> סרוק את כל 180, וענה קודם על הקלות והמהירות.</div>
+          <div style="margin-top:4px">⛔ <b>אל תענה על יותר מ-60 שאלות אם אינך בטוח</b> — תשובה שגויה <u>מעבר ל-60</u> מורידה את הציון (מעלה את המכנה).</div>
+          <div style="margin-top:4px">💡 בתוך 60 השאלות הראשונות אין קנס נוסף על טעות (המכנה נעול על 60) — אז אם חייבים להשלים ל-60, נחשו על הפחות-בטוחות.</div>
+          <div style="margin-top:4px">🎯 ככל שתצבור יותר תשובות <b>נכונות</b>, משקל של טעות אקראית קטן יותר. <b>אין ציון השוואתי.</b></div>
+        </div>
+        <div style="color:var(--muted);font-size:13px">חומר פתוח מודפס בלבד · אין מחשבון/טלפון · קצב מומלץ ~דקה עד דקה וחצי לשאלה.</div>
+      </div>
+      <div class="actions" style="margin-top:20px">
+        <button class="btn" id="beginExam">התחל מבחן · 90 דקות ▶</button>
+        <button class="btn ghost" id="cancelExam">חזרה לנושאים</button>
+      </div>
+    </div>`;
+  document.getElementById("beginExam").onclick=startExam;
+  document.getElementById("cancelExam").onclick=backHome;
+}
 function startExam(){
   const pool=shuffle(ALL).slice(0,Math.min(180,ALL.length)).map(q=>{
     const order=shuffle([0,1,2,3]);
