@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang=he dir=rtl>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>פקודות ומבנים — יישומי בינה מלאכותית בניהול</title>
+<style>
+:root{--bg:#F3F4F1;--surface:#FCFCFA;--surface2:#ECEFE9;--ink:#191C1F;--muted:#5B6470;--border:#E1E3DD;--accent:#17646E;--accent2:#0F4E57;--warm:#C67F2C}
+@media(prefers-color-scheme:dark){:root{--bg:#13161A;--surface:#1B2025;--surface2:#242B32;--ink:#E8EBE8;--muted:#96A0AB;--border:#2D343C;--accent:#45AAB4;--accent2:#67C3CC;--warm:#D79A4A}}
+:root[data-theme=light]{--bg:#F3F4F1;--surface:#FCFCFA;--surface2:#ECEFE9;--ink:#191C1F;--muted:#5B6470;--border:#E1E3DD;--accent:#17646E;--accent2:#0F4E57;--warm:#C67F2C}
+:root[data-theme=dark]{--bg:#13161A;--surface:#1B2025;--surface2:#242B32;--ink:#E8EBE8;--muted:#96A0AB;--border:#2D343C;--accent:#45AAB4;--accent2:#67C3CC;--warm:#D79A4A}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{margin:0;background:var(--bg);color:var(--ink);direction:rtl;font-family:"Segoe UI","Assistant",system-ui,Arial,sans-serif;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:26px 20px 70px}
+.bar{position:sticky;top:0;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);margin:-26px -20px 20px;padding:12px 20px;display:flex;align-items:center;gap:12px;z-index:6;flex-wrap:wrap}
+.bar b{font-weight:700}.bar .sp{flex:1}
+.bar a{color:var(--accent);text-decoration:none;font-size:14px}
+.tbtn{background:var(--surface2);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer}
+h1{font-size:27px;letter-spacing:-.02em;line-height:1.15;margin:.2em 0 .3em}
+.sub{color:var(--muted);font-size:14.5px;margin:0 0 20px}
+h2{font-size:20px;margin:26px 0 10px;padding-bottom:.25em;border-bottom:2px solid var(--accent);color:var(--accent)}
+h3{font-size:16.5px;margin:18px 0 6px;color:var(--ink)}
+p{margin:.5em 0}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:11px 14px;margin:9px 0}
+.step .lbl{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.num{background:var(--accent);color:#fff;border-radius:6px;font-size:12px;font-weight:700;padding:1px 7px;white-space:nowrap}
+.what{font-weight:600;font-size:15px}
+.why{color:var(--muted);font-size:13.5px}
+pre{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin:6px 0 0;overflow-x:auto;direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;font-size:13.3px;line-height:1.55;position:relative}
+pre .c{color:var(--muted)}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.9em;background:var(--surface2);padding:1px 5px;border-radius:4px;direction:ltr;display:inline-block}
+.tree{white-space:pre;direction:ltr;text-align:left}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:14.2px}
+th,td{border:1px solid var(--border);padding:6px 9px;text-align:right;vertical-align:top}
+th{background:var(--surface2);font-weight:700;color:var(--accent)}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--surface2) 45%,transparent)}
+td.cmd{direction:ltr;text-align:left;font-family:ui-monospace,Consolas,monospace;font-size:13px;white-space:nowrap}
+.err{border-inline-start:3px solid #c0392b;background:color-mix(in srgb,#c0392b 8%,transparent);border-radius:0 8px 8px 0;padding:7px 11px;margin:8px 0}
+.err b{color:#c0392b}
+:root[data-theme=dark] .err b,@media(prefers-color-scheme:dark){.err b{color:#e88}}
+.tip{border-inline-start:3px solid var(--warm);background:color-mix(in srgb,var(--warm) 10%,transparent);border-radius:0 8px 8px 0;padding:7px 11px;margin:8px 0;font-size:14.3px}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+.toc a{background:var(--surface2);border:1px solid var(--border);color:var(--accent);text-decoration:none;border-radius:7px;padding:4px 10px;font-size:13.5px}
+.src{color:var(--muted);font-size:12.5px;margin-top:4px}
+@media(max-width:560px){body{font-size:15px}h1{font-size:22px}td.cmd{white-space:normal}}
+@media print{
+ @page{margin:9mm;size:A4}
+ .bar,.toc{display:none!important}
+ body{font-size:8.6pt;line-height:1.35;background:#fff;color:#000}
+ .wrap{max-width:none;padding:0;columns:2;column-gap:8mm}
+ h1{font-size:13pt;margin:0 0 2pt;column-span:all}
+ .sub{font-size:7.5pt;margin:0 0 6pt;column-span:all;color:#444}
+ h2{font-size:10pt;color:#000;border-bottom:1pt solid #000;margin:6pt 0 3pt;break-after:avoid;column-span:all}
+ h3{font-size:8.8pt;margin:5pt 0 2pt;break-after:avoid}
+ .step{background:none;border:0;border-bottom:.4pt solid #ccc;border-radius:0;padding:2pt 0;margin:0;break-inside:avoid}
+ pre{background:#f4f4f4;border:.4pt solid #bbb;font-size:7.6pt;padding:3pt 5pt;break-inside:avoid}
+ table{font-size:7.6pt;break-inside:avoid}
+ th,td{border:.4pt solid #999;padding:1.5pt 4pt}
+ th{background:#eee;color:#000}
+ .num{background:none;color:#000;border:.4pt solid #000;font-size:7pt}
+ .err,.tip{background:none;border-inline-start:1.2pt solid #000;padding:2pt 5pt;font-size:7.6pt;break-inside:avoid}
+ .err b{color:#000}
+}
+</style>
+<div class=wrap>
+<div class=bar><b>⌨️ פקודות ומבנים</b><span class=sp></span>
+<a href="index.html">← לאתר התרגול</a>
+<a href="מילון-מושגים.html">📕 מילון</a>
+<a href="מדריך-למידה.html">📘 מדריך</a>
+<button class=tbtn onclick="var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c=='dark'?'light':'dark')">🌗</button></div>
+
+<h1>⌨️ פקודות ומבנים — דף שליפה</h1>
+<p class=sub>הפקודות והמבנים המדויקים מהרצאות 03, 08 ו-09 — מה שמדריך הלמידה מסביר במושגים, כאן מופיע כפקודה. מיועד להדפסה ולשליפה מהירה בבחינה הפתוחה.</p>
+
+<div class=toc>
+<a href="#git">Git — רצף מלא</a><a href="#giterr">שגיאות Git</a><a href="#docs">README / PRD / TODO</a>
+<a href="#skill">מבנה תיקיית Skill</a><a href="#skillrun">הפעלת סקיל</a><a href="#codex">Codex — התקנה ותקלות</a>
+</div>
+
+<h2 id="git">Git — הרצף המלא מתחילה ועד שיתוף פעולה</h2>
+
+<div class=step><div class=lbl><span class=num>1</span><span class=what>יצירת הפרויקט</span><span class=why>תיקייה = פרויקט</span></div>
+<pre>cd C:\201
+mkdir GitDemo
+cd GitDemo
+notepad task.py        <span class=c># print("Hello GitHub!")</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>2</span><span class=what>בדיקה והגדרה חד-פעמית</span><span class=why>שם ואימייל נשמרים גלובלית</span></div>
+<pre>git --version
+git config --global user.name  "Israel Israeli"
+git config --global user.email "israel@gmail.com"</pre></div>
+
+<div class=step><div class=lbl><span class=num>3</span><span class=what>הפיכת התיקייה לריפוזיטורי</span><span class=why>נוצרת תיקייה נסתרת <code>.git</code> עם כל ההיסטוריה</span></div>
+<pre>git init
+git status             <span class=c># הקובץ יופיע באדום — Untracked</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>4</span><span class=what>הקומיט הראשון</span><span class=why>Commit = snapshot מקומי</span></div>
+<pre>git add .              <span class=c># הכול לאזור ההכנה (ירוק)</span>
+git commit -m "Initial commit"
+git log                <span class=c># היסטוריית הקומיטים</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>5</span><span class=what>פתיחת ריפו ב-GitHub</span><span class=why>ידנית באתר</span></div>
+<p style="margin:2px 0 0;font-size:14.3px">New Repository ← שם <code>GitDemo</code> ← Public או Private ← <b>לא לסמן README</b> ← Create</p></div>
+
+<div class=step><div class=lbl><span class=num>6</span><span class=what>חיבור המקומי לענן ו-Push ראשון</span></div>
+<pre>git remote add origin https://github.com/&lt;username&gt;/GitDemo.git
+git remote -v          <span class=c># אימות הכתובת</span>
+git branch -M main     <span class=c># שם הענף הראשי</span>
+git push -u origin main   <span class=c># ‎-u קובע מעקב קבוע</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>7</span><span class=what>עדכון נוסף</span></div>
+<pre>git add .
+git commit -m "Update print message"
+git push               <span class=c># כבר בלי ‎-u</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>8</span><span class=what>Clone — עותק מלא במחשב אחר</span></div>
+<pre>cd C:\201
+git clone https://github.com/&lt;username&gt;/GitDemo.git GitDemo_Copy
+cd GitDemo_Copy
+dir                    <span class=c># הקבצים הגיעו מהענן</span></pre></div>
+
+<div class=step><div class=lbl><span class=num>9</span><span class=what>Pull — משיכת שינוי שבוצע במחשב אחר</span></div>
+<pre>git pull               <span class=c># Updating… Fast-forward</span></pre></div>
+
+<table>
+<thead><tr><th>פקודה</th><th>מה היא עושה</th><th>כיוון</th></tr></thead>
+<tbody>
+<tr><td class=cmd>git init</td><td>הופך תיקייה לריפוזיטורי</td><td>מקומי</td></tr>
+<tr><td class=cmd>git add .</td><td>מוסיף לאזור ההכנה (Staging)</td><td>מקומי</td></tr>
+<tr><td class=cmd>git commit -m</td><td><b>נקודת שמירה</b> + הודעת תיעוד</td><td>מקומי</td></tr>
+<tr><td class=cmd>git status</td><td>מצב הקבצים כרגע</td><td>מקומי</td></tr>
+<tr><td class=cmd>git log</td><td>היסטוריית הקומיטים</td><td>מקומי</td></tr>
+<tr><td class=cmd>git remote add origin</td><td>מקשר את המאגר המקומי לענן</td><td>קישור</td></tr>
+<tr><td class=cmd>git branch -M main</td><td>קובע את שם הענף הראשי</td><td>מקומי</td></tr>
+<tr><td class=cmd>git push</td><td>מעלה מהמחשב <b>→ לענן</b></td><td>מחשב ← ענן</td></tr>
+<tr><td class=cmd>git pull</td><td>מוריד מהענן <b>→ למחשב</b></td><td>ענן ← מחשב</td></tr>
+<tr><td class=cmd>git clone</td><td><b>עותק מלא</b> של ריפו קיים</td><td>ענן ← מחשב</td></tr>
+</tbody></table>
+<div class=tip>⚠️ <b>אל תתבלבל:</b> <code>Pull</code> מעדכן מאגר <b>שכבר קיים</b> אצלך · <code>Clone</code> יוצר <b>עותק חדש</b> מאפס.</div>
+
+<h2 id="giterr">שגיאות Git נפוצות</h2>
+<div class=err><b>error: src refspec main does not match any</b><br>
+עוד לא ביצעת קומיט — אין מה לדחוף. פתרון: <code>git add .</code> ואז <code>git commit -m "first commit"</code></div>
+<div class=err><b>repository not found</b><br>
+לבדוק שלושה דברים: שה-URL נכון, שאתה מחובר למשתמש הנכון, ושהריפו באמת קיים ב-GitHub.</div>
+<div class=err><b>בעיית login בעת Push</b><br>
+לעבור ל-browser authentication או לחלון ה-GitHub login popup.</div>
+
+<h2 id="docs">שלושת הקבצים שחייבים להיות בריפו</h2>
+<p style="margin-top:0">מחזור הפיתוח <b>PRD → Plan → To-Do</b>, ובנוסף README. כולם ב-Markdown.</p>
+<pre>notepad README.md
+notepad PRD.md
+notepad TODO.md</pre>
+<h3>README.md — החשוב ביותר</h3>
+<pre># GitDemo Project
+This is a simple Python project for learning Git and GitHub.
+## Features
+- Basic Python script
+- Version control using Git
+## How to run
+python task.py
+## Author</pre>
+<h3>PRD.md — מסמך דרישות מוצר</h3>
+<pre># PRD - GitDemo
+## Goal
+Learn Git and GitHub workflow.
+## Requirements
+- Create Python project
+- Track changes using Git
+- Push to GitHub
+## Output
+- Working repository on GitHub</pre>
+<h3>TODO.md — משימות אטומיות עם Checkboxes</h3>
+<pre># TODO List
+- [x] Create Python file
+- [x] Initialize Git repository
+- [ ] Add more Python features
+- [ ] Practice branching</pre>
+<div class=tip>📷 <b>תמונות ב-README</b> (המרצה ביקש במפורש): <code>![Git Screenshot](screenshot.png)</code></div>
+
+<h2 id="skill">מבנה תיקיית Skill — איפה זה יושב בפועל</h2>
+<p style="margin-top:0">כל המיומנויות יושבות תחת <code>C:\Users\&lt;user&gt;\.codex\skills\</code></p>
+<pre class=tree>.codex\skills\
+├── supply_chain_analyst\
+│   ├── skill.md
+│   ├── instructions.md
+│   ├── tools\
+│   │   └── inventory_tool.py
+│   └── data\
+│       └── inventory.csv
+└── procurement_advisor\
+    ├── skill.md
+    └── instructions.md</pre>
+<h3>יצירת המבנה ב-PowerShell</h3>
+<pre>$root = "$HOME\.codex\skills"
+
+New-Item -ItemType Directory -Force -Path `
+  "$root\supply_chain_analyst\tools",
+  "$root\supply_chain_analyst\data"
+
+New-Item -ItemType File -Force -Path `
+  "$root\supply_chain_analyst\skill.md",
+  "$root\supply_chain_analyst\instructions.md",
+  "$root\supply_chain_analyst\tools\inventory_tool.py",
+  "$root\supply_chain_analyst\data\inventory.csv"</pre>
+
+<h3>skill.md — חמשת החלקים</h3>
+<pre># Supply Chain Analyst Skill
+## Role
+You are a supply chain analyst responsible for
+inventory monitoring and restocking decisions.
+## Inputs
+- Inventory CSV files
+- Stock levels and reorder thresholds
+## Tools
+- inventory_tool.py (Python analysis tool)
+## Behavior
+1. Load inventory data
+2. Identify items where stock &lt; reorder_level
+3. Rank items by urgency (lowest stock first)
+4. Recommend restocking priorities
+## Rules
+- Always use exact numeric comparisons
+- Prefer tool usage for calculations</pre>
+<table>
+<thead><tr><th>חלק</th><th>תפקידו</th></tr></thead>
+<tbody>
+<tr><td><b>Role</b></td><td>הפרסונה — מי הסוכן ומה תחום אחריותו</td></tr>
+<tr><td><b>Inputs</b></td><td>אילו נתונים הוא מקבל</td></tr>
+<tr><td><b>Tools</b></td><td>אילו כלים (סקריפטים) עומדים לרשותו</td></tr>
+<tr><td><b>Behavior</b></td><td>סדר הפעולות — הלוגיקה עצמה</td></tr>
+<tr><td><b>Rules</b></td><td>אילוצים קשיחים (למשל: תמיד להעדיף כלי על חישוב עצמי)</td></tr>
+</tbody></table>
+
+<h3>ה-tool בפייתון (inventory_tool.py)</h3>
+<pre>import pandas as pd
+
+def analyze_inventory(path):
+    df = pd.read_csv(path)
+    df["need_reorder"] = df["stock"] &lt; df["reorder_level"]
+    low = df[df["need_reorder"] == True]
+    return {
+      "total_items": len(df),
+      "low_stock_count": len(low),
+      "critical_items": low.sort_values("stock")[
+          ["item_name","stock","reorder_level"]
+      ].to_dict(orient="records")
+    }</pre>
+<h3>data/inventory.csv</h3>
+<pre>item_id,item_name,stock,reorder_level,unit_cost
+1001,Laptop,12,10,3500
+1002,Mouse,80,30,25
+1003,Keyboard,15,20,60
+1004,Monitor,5,8,900
+1005,Docking Station,3,5,250</pre>
+<div class=tip>💡 בדוגמה זו <b>Keyboard</b> (15&lt;20), <b>Monitor</b> (5&lt;8) ו-<b>Docking Station</b> (3&lt;5) חוצים את סף ההזמנה — ומדורגים לפי מלאי נמוך תחילה.</div>
+
+<h2 id="skillrun">הפעלת סקיל והחלפה בזמן ריצה</h2>
+<table>
+<thead><tr><th>פעולה</th><th>פקודה</th></tr></thead>
+<tbody>
+<tr><td>הפעלה מהטרמינל</td><td class=cmd>codex supply_chain_analyst</td></tr>
+<tr><td>הפעלה מהטרמינל</td><td class=cmd>codex procurement_advisor</td></tr>
+<tr><td><b>החלפה בתוך שיחה</b></td><td class=cmd>/skill supply_chain_analyst</td></tr>
+<tr><td><b>החלפה בתוך שיחה</b></td><td class=cmd>/skill procurement_advisor</td></tr>
+</tbody></table>
+<div class=tip>🔗 <b>שרשור שני סקילים:</b> ה-Analyst מזהה פריטים קריטיים במלאי → מחליפים ל-Advisor שממליץ על סדר רכש מותאם תקציב. זו הדגמה של <b>ריבוי סוכנים מתמחים</b> במקום סוכן כללי אחד.</div>
+
+<h2 id="codex">Codex — התקנה ותקלות</h2>
+<table>
+<thead><tr><th>שלב</th><th>פקודה</th></tr></thead>
+<tbody>
+<tr><td>בדיקת ספריות מערכת</td><td class=cmd>Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\x64'</td></tr>
+<tr><td>אימות Node.js</td><td class=cmd>node -v</td></tr>
+<tr><td>הרשאת סקריפטים</td><td class=cmd>Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned</td></tr>
+<tr><td>התקנת Codex</td><td class=cmd>npm install -g @openai/codex</td></tr>
+<tr><td>אימות גרסה</td><td class=cmd>codex --version</td></tr>
+<tr><td>הזדהות (OAuth 2.0)</td><td class=cmd>codex login</td></tr>
+</tbody></table>
+<div class=err><b><code>node -v</code> לא מזוהה</b><br>
+התקנת Node זה עתה — חובה <b>לסגור ולפתוח מחדש את הטרמינל</b> (רענון משתני הסביבה).</div>
+<div class=err><b><code>codex --version</code> מחזיר שגיאה</b><br>
+בדוק שההתקנה הגלובלית הושלמה, ושאתה ב-PowerShell 7 (האייקון השחור) ולא בגרסה הישנה.</div>
+<div class=tip>⚠️ <code>codex</code> מפעיל את הסוכן · <code>codex login</code> מבצע הזדהות. שתי פקודות שונות — אל תחליף ביניהן.</div>
+<div class=tip>🚪 <b>יציאה:</b> <code>exit</code> בתוך Codex יוצא ונשאר בטרמינל · <code>exit</code> שוב סוגר את הטרמינל. <b>שתיהן exit</b> — ההבדל הוא ההקשר.</div>
+
+<p class=src>מקורות: תרגול Git ו-GitHub (ZOOM) · תרגול GIT מותאם לקורס · creating_supply_chain_skill · codex_cookbook — כולם מ-Moodle של הקורס.</p>
+</div>
