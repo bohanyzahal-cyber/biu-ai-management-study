@@ -130,6 +130,27 @@ h1{font-size:clamp(28px,5vw,42px);line-height:1.1;margin:0 0 12px;letter-spacing
 .livescore{font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .livescore b{color:var(--good)}
 
+/* question map (שיטוט חופשי בין שאלות) */
+.qmapbox{margin-top:16px;border:1px solid var(--border);border-radius:11px;background:var(--surface-2);overflow:hidden}
+.qmapbox summary{list-style:none;cursor:pointer;padding:10px 14px;font-size:13.5px;font-weight:650;color:var(--ink);display:flex;align-items:center;gap:8px;flex-wrap:wrap;user-select:none}
+.qmapbox summary::-webkit-details-marker{display:none}
+.qmapbox summary .arrow{margin-inline-start:auto;transition:transform .15s;color:var(--muted)}
+.qmapbox[open] summary .arrow{transform:rotate(90deg)}
+.qmapbox .mstat{font-weight:400;color:var(--muted);font-size:12.5px}
+.qmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:5px;padding:0 12px 8px}
+.qmap button{position:relative;height:30px;border-radius:7px;border:1px solid var(--border);background:var(--surface);font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;font-variant-numeric:tabular-nums;padding:0}
+.qmap button:hover{border-color:var(--accent)}
+.qmap button.ans{background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:color-mix(in srgb,var(--accent) 55%,var(--border));color:var(--ink);font-weight:600}
+.qmap button.ok{background:color-mix(in srgb,var(--good) 16%,transparent);border-color:color-mix(in srgb,var(--good) 50%,var(--border));color:var(--ink)}
+.qmap button.bad{background:color-mix(in srgb,var(--bad) 14%,transparent);border-color:color-mix(in srgb,var(--bad) 45%,var(--border));color:var(--ink)}
+.qmap button.cur{outline:2px solid var(--accent);outline-offset:1px;font-weight:700;color:var(--ink)}
+.qmap button.flg::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:6px;height:6px;border-radius:50%;background:var(--warm,#c67f2c)}
+.qmap-tools{display:flex;gap:8px;flex-wrap:wrap;padding:4px 12px 12px}
+.qmap-tools .btn{padding:6px 12px;font-size:12.5px;border-radius:8px;box-shadow:none}
+.flagon{background:color-mix(in srgb,var(--warm,#c67f2c) 22%,transparent)!important;border-color:var(--warm,#c67f2c)!important}
+.qmap-legend{display:flex;gap:12px;flex-wrap:wrap;padding:0 14px 10px;font-size:11.5px;color:var(--muted)}
+.qmap-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:4px;vertical-align:-1px}
+
 /* results */
 .res{text-align:center;padding:14px 0}
 .ring{--p:0;width:150px;height:150px;margin:6px auto 4px;border-radius:50%;display:grid;place-items:center;
@@ -734,17 +755,53 @@ function start(pool,title,key){
     const order=shuffle([0,1,2,3]);
     return {q:q.q,opts:order.map(i=>q.o[i]),correct:order.indexOf(q.c),e:q.e,tname:q.tname||title,topic:q.topic};
   });
-  S={qs,i:0,score:0,answered:false,title,key,perTopic:{}};
+  S={qs,i:0,score:0,answered:false,answers:{},title,key,perTopic:{},mode:"practice",mapOpen:true};
   home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);render();
+}
+
+/* מפת שאלות — שיטוט חופשי בין השאלות (כמו ב-Moodle) */
+function mapBox(states,cur,onJump,tools){
+  const n=states.length;
+  const box=document.createElement("details");box.className="qmapbox";box.open=S.mapOpen!==false;
+  box.addEventListener("toggle",()=>{S.mapOpen=box.open});
+  const answered=states.filter(s=>/ans|ok|bad/.test(s)).length;
+  const flagged=states.filter(s=>/flg/.test(s)).length;
+  const sum=document.createElement("summary");
+  sum.innerHTML=`🗺 מפת שאלות <span class="mstat">נענו ${answered}/${n}${flagged?` · 🚩 ${flagged} לחזרה`:""}</span><span class="arrow">◀</span>`;
+  box.appendChild(sum);
+  const grid=document.createElement("div");grid.className="qmap";
+  states.forEach((st,i)=>{
+    const b=document.createElement("button");b.type="button";b.textContent=i+1;
+    b.className=(st+(i===cur?" cur":"")).trim();
+    b.title=`לשאלה ${i+1}`;
+    b.onclick=()=>onJump(i);
+    grid.appendChild(b);
+  });
+  box.appendChild(grid);
+  if(tools&&tools.length){const t=document.createElement("div");t.className="qmap-tools";tools.forEach(x=>t.appendChild(x));box.appendChild(t)}
+  const leg=document.createElement("div");leg.className="qmap-legend";
+  leg.innerHTML=S.mode==="exam"
+    ?`<span><i style="background:color-mix(in srgb,var(--accent) 16%,transparent);border:1px solid var(--accent)"></i>נענתה</span><span><i style="background:var(--warm,#c67f2c)"></i>🚩 מסומנת לחזרה</span><span><i style="background:var(--surface);border:1px solid var(--border)"></i>טרם נענתה</span>`
+    :`<span><i style="background:color-mix(in srgb,var(--good) 16%,transparent);border:1px solid var(--good)"></i>נכון</span><span><i style="background:color-mix(in srgb,var(--bad) 14%,transparent);border:1px solid var(--bad)"></i>שגוי</span><span><i style="background:var(--surface);border:1px solid var(--border)"></i>טרם נענתה</span>`;
+  box.appendChild(leg);
+  return box;
+}
+function ghostBtn(label,onclick,disabled){
+  const b=document.createElement("button");b.className="btn ghost";b.textContent=label;
+  b.onclick=onclick;if(disabled)b.disabled=true;return b;
 }
 function backHome(){clearInterval(examTimerId);examTimerId=null;quiz.classList.remove("active");home.classList.remove("hide");refreshChips();window.scrollTo(0,0);}
 document.getElementById("backBtn").onclick=backHome;
 
+function practiceStates(){
+  return S.qs.map((q,i)=>S.answers[i]==null?"":(S.answers[i]===q.correct?"ok":"bad"));
+}
 function render(){
-  const q=S.qs[S.i],n=S.qs.length;
+  const q=S.qs[S.i],n=S.qs.length,prevAns=S.answers[S.i];
   document.getElementById("qMeta").textContent=`${S.title}`;
-  document.getElementById("pfill").style.width=(S.i/n*100)+"%";
-  S.answered=false;
+  const answeredCount=Object.keys(S.answers).length;
+  document.getElementById("pfill").style.width=(answeredCount/n*100)+"%";
+  S.answered=prevAns!=null;
   stage.innerHTML=`
     <div class="qcard">
       <div class="qnum">שאלה ${S.i+1} מתוך ${n}</div>
@@ -752,20 +809,40 @@ function render(){
       <div class="opts" id="opts"></div>
       <div class="expl" id="expl"></div>
       <div class="qnav">
-        <span class="livescore">ציון: <b>${S.score}</b> / ${S.i}</span>
-        <button class="btn" id="next" disabled>${S.i+1<n?"הבא ←":"סיום ותוצאות"}</button>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn ghost" id="prevP" ${S.i===0?"disabled":""}>→ הקודם</button>
+          <span class="livescore">ציון: <b>${S.score}</b> / ${answeredCount}</span>
+        </div>
+        <button class="btn" id="next" ${S.answered?"":"disabled"}>${S.i+1<n?"הבא ←":"סיום ותוצאות"}</button>
       </div>
     </div>`;
   const opts=document.getElementById("opts");
   q.opts.forEach((txt,idx)=>{
     const b=document.createElement("button");b.className="opt";
     b.innerHTML=`<span class="letter">${LET[idx]}</span><span>${txt}</span>`;
-    b.onclick=()=>choose(idx,b);opts.appendChild(b);
+    if(prevAns!=null){b.disabled=true;if(idx===q.correct)b.classList.add("correct");else if(idx===prevAns)b.classList.add("wrong");else b.classList.add("dim");}
+    else b.onclick=()=>choose(idx,b);
+    opts.appendChild(b);
   });
-  document.getElementById("next").onclick=()=>{if(S.i+1<n){S.i++;render();window.scrollTo({top:0,behavior:"smooth"});}else results();};
+  if(prevAns!=null){
+    const ex=document.getElementById("expl");
+    ex.innerHTML=(prevAns===q.correct?`<b>נכון!</b> `:`<b>התשובה הנכונה:</b> ${q.opts[q.correct]}. `)+(q.e?`<br>${q.e}`:"");
+    ex.classList.add("show");
+  }
+  document.getElementById("prevP").onclick=()=>{if(S.i>0){S.i--;render();window.scrollTo({top:0,behavior:"smooth"});}};
+  document.getElementById("next").onclick=()=>{
+    if(S.i+1<n){S.i++;render();window.scrollTo({top:0,behavior:"smooth"});}
+    else{
+      const a=Object.keys(S.answers).length;
+      if(a<n&&!confirm(`נותרו ${n-a} שאלות שטרם נענו (ייחשבו כשגויות). לסיים בכל זאת?`))return;
+      results();
+    }
+  };
+  stage.querySelector(".qcard").appendChild(mapBox(practiceStates(),S.i,i=>{S.i=i;render();window.scrollTo({top:0,behavior:"smooth"});}));
 }
 function choose(idx,btn){
   if(S.answered)return;S.answered=true;
+  S.answers[S.i]=idx;
   const q=S.qs[S.i],buttons=[...document.querySelectorAll(".opt")];
   buttons.forEach((b,i)=>{b.disabled=true;if(i===q.correct)b.classList.add("correct");else if(i===idx)b.classList.add("wrong");else b.classList.add("dim");});
   const tk=q.topic||"?";S.perTopic[tk]=S.perTopic[tk]||{c:0,n:0,name:q.tname};S.perTopic[tk].n++;
@@ -775,8 +852,11 @@ function choose(idx,btn){
   ex.innerHTML=(idx===q.correct?`<b>נכון!</b> `:`<b>התשובה הנכונה:</b> ${correctTxt}. `)+(q.e?`<br>${q.e}`:"");
   ex.classList.add("show");
   document.getElementById("next").disabled=false;
-  document.querySelector(".livescore").innerHTML=`ציון: <b>${S.score}</b> / ${S.i+1}`;
-  document.getElementById("pfill").style.width=((S.i+1)/S.qs.length*100)+"%";
+  const answeredCount=Object.keys(S.answers).length;
+  document.querySelector(".livescore").innerHTML=`ציון: <b>${S.score}</b> / ${answeredCount}`;
+  document.getElementById("pfill").style.width=(answeredCount/S.qs.length*100)+"%";
+  const old=stage.querySelector(".qmapbox");if(old)old.remove();
+  stage.querySelector(".qcard").appendChild(mapBox(practiceStates(),S.i,i=>{S.i=i;render();window.scrollTo({top:0,behavior:"smooth"});}));
 }
 function results(){
   const n=S.qs.length,pct=Math.round(S.score/n*100);
@@ -816,7 +896,7 @@ function examIntro(){
       <p class="qtext" style="font-size:19px;margin-bottom:14px">קרא את ההוראות לפני שמתחילים</p>
       <div style="font-size:15px;line-height:1.7;display:flex;flex-direction:column;gap:9px;text-align:right">
         <div>📋 <b>180 שאלות</b> — אתה בוחר לענות רק על <b>60</b> (המינימום לציון 100 מלא).</div>
-        <div>⏱ <b>90 דקות</b>. אפשר <b>לדלג</b> בחופשיות ולחזור אחורה. הכפתור "סיים והגש" זמין בכל רגע.</div>
+        <div>⏱ <b>90 דקות</b>. אפשר <b>לדלג</b> בחופשיות, לקפוץ לכל שאלה דרך 🗺 <b>מפת השאלות</b>, ולסמן 🚩 שאלות לחזרה. הכפתור "סיים והגש" זמין בכל רגע.</div>
         <div>🧮 <b>ציון = נכונות ÷ max(מספר שענית, 60) × 100.</b></div>
         <div style="background:var(--surface-2);border:1px solid var(--border);border-radius:11px;padding:13px 15px">
           <b style="color:var(--accent)">אסטרטגיה מנצחת:</b>
@@ -840,7 +920,7 @@ function startExam(){
     const order=shuffle([0,1,2,3]);
     return {q:q.q,opts:order.map(i=>q.o[i]),correct:order.indexOf(q.c),tname:q.tname};
   });
-  S={qs:pool,i:0,answers:{},mode:"exam",key:"exam"};
+  S={qs:pool,i:0,answers:{},flags:{},mode:"exam",key:"exam",mapOpen:true};
   home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);
   renderExam();
   const end=Date.now()+90*60*1000;
@@ -865,6 +945,7 @@ function renderExam(){
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn ghost" id="prev" ${S.i===0?'disabled':''}>→ הקודם</button>
           <button class="btn ghost" id="skip" ${S.i+1>=n?'disabled':''}>${chosen!=null?'הבא ←':'דלג ←'}</button>
+          <button class="btn ghost ${S.flags[S.i]?'flagon':''}" id="flagBtn">🚩 ${S.flags[S.i]?'מסומנת לחזרה':'סמן לחזרה'}</button>
         </div>
         <button class="btn" id="fin">סיים והגש</button>
       </div>
@@ -877,8 +958,20 @@ function renderExam(){
   });
   document.getElementById("prev").onclick=()=>{if(S.i>0){S.i--;renderExam();window.scrollTo({top:0,behavior:"smooth"});}};
   document.getElementById("skip").onclick=()=>{if(S.i+1<n){S.i++;renderExam();window.scrollTo({top:0,behavior:"smooth"});}};
+  document.getElementById("flagBtn").onclick=()=>{if(S.flags[S.i])delete S.flags[S.i];else S.flags[S.i]=true;renderExam();};
   document.getElementById("fin").onclick=()=>{const a=Object.keys(S.answers).length;if(a<60&&!confirm(`ענית על ${a} שאלות בלבד (המינימום 60). להגיש בכל זאת?`))return;submitExam(false);};
+  const jump=i=>{S.i=i;renderExam();window.scrollTo({top:0,behavior:"smooth"});};
+  const nextWhere=pred=>{for(let k=1;k<=n;k++){const j=(S.i+k)%n;if(pred(j))return j}return -1};
+  const states=S.qs.map((_,i)=>((S.answers[i]!=null?"ans ":"")+(S.flags[i]?"flg":"")).trim());
+  const tUn=ghostBtn("⏭ לבאה שלא נענתה",()=>{const j=nextWhere(j=>S.answers[j]==null);if(j>=0)jump(j);},answered>=n);
+  const tFlg=ghostBtn("🚩 לבאה המסומנת",()=>{const j=nextWhere(j=>S.flags[j]);if(j>=0)jump(j);},!Object.keys(S.flags).length);
+  stage.querySelector(".qcard").appendChild(mapBox(states,S.i,jump,[tUn,tFlg]));
 }
+document.addEventListener("keydown",e=>{
+  if(!S||S.mode!=="exam"||!quiz.classList.contains("active"))return;
+  if(e.key==="ArrowLeft"){const b=document.getElementById("skip");if(b&&!b.disabled)b.click();}
+  else if(e.key==="ArrowRight"){const b=document.getElementById("prev");if(b&&!b.disabled)b.click();}
+});
 function submitExam(timedOut){
   clearInterval(examTimerId);examTimerId=null;
   const answered=Object.keys(S.answers).length;let correct=0;const wrong=[];
