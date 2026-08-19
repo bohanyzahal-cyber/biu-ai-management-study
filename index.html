@@ -740,9 +740,12 @@ topics.forEach(t=>{
   c.onclick=()=>start(t.qs,t.name,"t_"+t.id);
   grid.appendChild(c);
 });
-const cSim=card(`<span class="tag">🎯 סימולציית מבחן</span><h3>מבחן מלא (SPEED TEST)</h3><p>180 שאלות · עונים על 60 · 90 דקות · נוסחת ציון — בדיוק כמו בבחינה</p><div class="foot"><span>180 שאלות</span>${bestChip("exam")}</div>`);
-cSim.className="card special";cSim.onclick=()=>examIntro();
+const cSim=card(`<span class="tag">🎯 סימולציית מבחן</span><h3>מבחן מלא (SPEED TEST)</h3><p>180 שאלות אקראיות מכל המאגר · עונים על 60 · 90 דקות · נוסחת ציון — בדיוק כמו בבחינה</p><div class="foot"><span>180 שאלות</span>${bestChip("exam")}</div>`);
+cSim.className="card special";cSim.onclick=()=>examIntro("mixed");
 grid.appendChild(cSim);
+const cSimS=card(`<span class="tag">📝 סימולציה · המבחן של המרצה</span><h3>המבחן לדוגמה בתנאי אמת</h3><p>180 השאלות שפרסם המרצה, בסדר המקורי · עונים על 60 · 90 דקות · בלי משוב עד ההגשה</p><div class="foot"><span>180 שאלות</span>${bestChip("examSample")}</div>`);
+cSimS.className="card special";cSimS.onclick=()=>examIntro("sample");
+grid.appendChild(cSimS);
 const cAll=card(`<span class="tag">מרתון</span><h3>כל השאלות</h3><p>כל בנק השאלות ברצף אחד, בסדר אקראי</p><div class="foot"><span>${ALL.length} שאלות</span>${bestChip("all")}</div>`);
 cAll.className="card special";cAll.onclick=()=>start(shuffle(ALL),"כל השאלות","all");
 grid.appendChild(cAll);
@@ -885,15 +888,21 @@ function results(){
   document.getElementById("home2").onclick=backHome;
 }
 /* ---------- exam simulation (SPEED TEST: 180 Q, answer 60, 90 min) ---------- */
-function examIntro(){
+function examIntro(kind){
+  kind=kind||"mixed";
   clearInterval(examTimerId);examTimerId=null;
   home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);
   document.getElementById("qMeta").textContent="הוראות המבחן";
   document.getElementById("pfill").style.width="0%";
+  const head=kind==="sample"
+    ?`<div class="qnum">📝 סימולציה · המבחן לדוגמה של המרצה</div>
+      <p class="qtext" style="font-size:19px;margin-bottom:8px">180 השאלות שפרסם המרצה — בתנאי המבחן האמיתיים</p>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 14px">השאלות בסדר המקורי של המבחן לדוגמה (המספרים תואמים את סעיף 8 בחוברת), התשובות מעורבבות בכל ניסיון. אין מחוון רשמי — התשובות אומתו מול סיכומי המרצה.</p>`
+    :`<div class="qnum">🎯 סימולציית מבחן · SPEED TEST</div>
+      <p class="qtext" style="font-size:19px;margin-bottom:14px">קרא את ההוראות לפני שמתחילים</p>`;
   stage.innerHTML=`
     <div class="qcard" style="max-width:700px;margin:0 auto">
-      <div class="qnum">🎯 סימולציית מבחן · SPEED TEST</div>
-      <p class="qtext" style="font-size:19px;margin-bottom:14px">קרא את ההוראות לפני שמתחילים</p>
+      ${head}
       <div style="font-size:15px;line-height:1.7;display:flex;flex-direction:column;gap:9px;text-align:right">
         <div>📋 <b>180 שאלות</b> — אתה בוחר לענות רק על <b>60</b> (המינימום לציון 100 מלא).</div>
         <div>⏱ <b>90 דקות</b>. אפשר <b>לדלג</b> בחופשיות, לקפוץ לכל שאלה דרך 🗺 <b>מפת השאלות</b>, ולסמן 🚩 שאלות לחזרה. הכפתור "סיים והגש" זמין בכל רגע.</div>
@@ -912,15 +921,22 @@ function examIntro(){
         <button class="btn ghost" id="cancelExam">חזרה לנושאים</button>
       </div>
     </div>`;
-  document.getElementById("beginExam").onclick=startExam;
+  document.getElementById("beginExam").onclick=()=>startExam(kind);
   document.getElementById("cancelExam").onclick=backHome;
 }
-function startExam(){
-  const pool=shuffle(ALL).slice(0,Math.min(180,ALL.length)).map(q=>{
+function startExam(kind){
+  kind=kind||"mixed";
+  const base=kind==="sample"
+    ?topics.find(t=>t.id==="sample180").qs.slice()           // הסדר המקורי של המרצה
+    :shuffle(ALL).slice(0,Math.min(180,ALL.length));
+  const pool=base.map(q=>{
     const order=shuffle([0,1,2,3]);
     return {q:q.q,opts:order.map(i=>q.o[i]),correct:order.indexOf(q.c),tname:q.tname};
   });
-  S={qs:pool,i:0,answers:{},flags:{},mode:"exam",key:"exam",mapOpen:true};
+  S={qs:pool,i:0,answers:{},flags:{},mode:"exam",examKind:kind,
+     key:kind==="sample"?"examSample":"exam",
+     examName:kind==="sample"?"המבחן לדוגמה של המרצה":"מבחן מלא (SPEED TEST)",
+     mapOpen:true};
   home.classList.add("hide");quiz.classList.add("active");window.scrollTo(0,0);
   renderExam();
   const end=Date.now()+90*60*1000;
@@ -975,16 +991,17 @@ document.addEventListener("keydown",e=>{
 function submitExam(timedOut){
   clearInterval(examTimerId);examTimerId=null;
   const answered=Object.keys(S.answers).length;let correct=0;const wrong=[];
+  const numbered=S.examKind==="sample";
   S.qs.forEach((q,idx)=>{
     if(S.answers[idx]!=null){
       if(S.answers[idx]===q.correct)correct++;
-      else wrong.push(`<div class="brow" style="align-items:flex-start;gap:8px"><span class="bn" style="flex:1;color:var(--ink)">${q.q}<br><span style="color:var(--bad)">✗ ${q.opts[S.answers[idx]]}</span><br><span style="color:var(--good)">✓ ${q.opts[q.correct]}</span></span></div>`);
+      else wrong.push(`<div class="brow" style="align-items:flex-start;gap:8px"><span class="bn" style="flex:1;color:var(--ink)"><b>ש׳ ${idx+1}${numbered?" (במקור)":""}.</b> ${q.q}<br><span style="color:var(--bad)">✗ ${q.opts[S.answers[idx]]}</span><br><span style="color:var(--good)">✓ ${q.opts[q.correct]}</span></span></div>`);
     }
   });
   const denom=Math.max(answered,60),score=Math.round(correct/denom*100);
-  saveBest("exam",score);
+  saveBest(S.key||"exam",score);
   document.getElementById("pfill").style.width="100%";
-  document.getElementById("qMeta").textContent="תוצאות המבחן";
+  document.getElementById("qMeta").textContent="תוצאות — "+(S.examName||"המבחן");
   const to=timedOut?`<p class="sub" style="color:var(--bad)">⏱ הזמן (90 דק') נגמר — הוגש אוטומטית.</p>`:"";
   const warn=answered<60?`<p class="sub" style="color:var(--bad)">⚠️ ענית על ${answered} שאלות בלבד — במבחן האמיתי חובה לענות לפחות 60.</p>`:"";
   stage.innerHTML=`
@@ -1000,7 +1017,7 @@ function submitExam(timedOut){
         <button class="btn ghost" id="homeExam">חזרה לנושאים</button>
       </div>
     </div>`;
-  document.getElementById("againExam").onclick=startExam;
+  document.getElementById("againExam").onclick=()=>startExam(S.examKind);
   document.getElementById("homeExam").onclick=backHome;
 }
 function refreshChips(){
@@ -1011,6 +1028,7 @@ function refreshChips(){
   const cards=[...grid.children];
   topics.forEach((t,idx)=>{const chip=cards[idx].querySelector(".chip");if(chip){const b=best["t_"+t.id];chip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}});
   const simChip=cards[topics.length]?.querySelector(".chip");if(simChip){const b=best["exam"];simChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
-  const allChip=cards[topics.length+1]?.querySelector(".chip");if(allChip){const b=best["all"];allChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
+  const simSChip=cards[topics.length+1]?.querySelector(".chip");if(simSChip){const b=best["examSample"];simSChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
+  const allChip=cards[topics.length+2]?.querySelector(".chip");if(allChip){const b=best["all"];allChip.outerHTML=(b!=null)?`<span class="chip done">✓ ${b}%</span>`:`<span class="chip">—</span>`;}
 }
 </script>
