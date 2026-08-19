@@ -226,6 +226,8 @@ def extract_commands() -> str:
     blocks, cur = [], ""
     for el in split_top(region):
         tag = re.match(r"<([a-zA-Z0-9]+)", el).group(1).lower()
+        if 'class=src' in el[:40]:
+            continue  # שורת קרדיט המקורות — מיותרת בחוברת וגולשת לעמוד יתום
         if tag == "h2":
             cur = attr(el, 40)
             blocks.append(wrap_b(el, "", t=attr(el, 24), h=cur, x=True, keep=True))
