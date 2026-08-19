@@ -141,6 +141,9 @@ ol.opts li.ok>b{color:var(--sc)}
 .expl{font-size:7.2pt;color:#555;margin-top:.4mm;padding-inline-start:4.6mm}
 .expl.fl{color:#8a5210}
 .lechead{padding-top:1mm}
+.qa{border-bottom:.25mm solid #e0e0e0;padding-bottom:1mm}
+.qa .qaq{font-size:7.9pt;line-height:1.3}
+.qa .qaa{font-size:7.9pt;font-weight:700;color:var(--sc);padding-inline-start:4mm;line-height:1.3}
 
 /* ═══════════ שער ═══════════ */
 .cover .cvstrip{position:absolute;top:0;right:0;left:0;height:6mm;display:flex}
@@ -326,6 +329,11 @@ ol.opts li.ok>b{color:var(--sc)}
   data-desc="20 שאלות תרגול על Git, מבנה Skill ו-Codex. ברירת מחדל: לא מודפס.">
 </section>
 
+<section class=payload id=ps-compact data-num=12 data-icon="🧾" data-color="#0e7490" data-cols=2 data-q=sample180 data-compact=1 data-range=q data-def=0
+  data-title="תמצית המבחן לדוגמה — שאלה ותשובה בלבד" data-short="תמצית 180"
+  data-desc="כל 180 שאלות המבחן לדוגמה בגרסה דחוסה: השאלה והתשובה הנכונה בלבד, בלי המסיחים — חלופה חסכונית בנייר לסעיף 8, עם אותן תשובות מאומתות ובאותו מספור. ברירת מחדל: לא מודפס — סמנו כאן ובטלו את סעיף 8 אם מעדיפים את התמצית.">
+</section>
+
 </div>
 
 <script>const DATA={{DATA}};const UPDATED="{{UPDATED}}";</script>
@@ -337,6 +345,7 @@ const SECS=[...document.querySelectorAll('#payloads .payload')].map(s=>({
   el:s,id:s.id,num:+s.dataset.num,icon:s.dataset.icon,title:s.dataset.title,
   short:s.dataset.short||s.dataset.title,color:s.dataset.color,cols:+(s.dataset.cols||1),
   q:s.dataset.q||'',range:s.dataset.range||'',desc:s.dataset.desc||'',
+  compact:s.dataset.compact==='1',
   countWhat:s.dataset.countWhat||'',def:s.dataset.def!=='0'
 }));
 let P=0;
@@ -409,7 +418,14 @@ function qBlocks(sec){
     const t=DATA.find(x=>x.id===sec.q);
     if(!t)return out;
     t.qs.forEach((q,i)=>{
-      const d=qBlock(q,i+1);
+      let d;
+      if(sec.compact){
+        d=el('div','b qa');
+        d.dataset.t=String(i+1);
+        d.innerHTML=`<div class=qaq><span class=qn>${i+1}.</span> ${esc(q.q)}</div><div class=qaa>✓ ${esc(q.o[q.c])}</div>`;
+      }else{
+        d=qBlock(q,i+1);
+      }
       if(i%20===0){d.dataset.x='1';d.dataset.ix=`${i+1}–${Math.min(i+20,t.qs.length)}`}
       out.push(d);
     });
