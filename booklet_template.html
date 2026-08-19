@@ -334,6 +334,11 @@ ol.opts li.ok>b{color:var(--sc)}
   data-desc="כל 180 שאלות המבחן לדוגמה בגרסה דחוסה: השאלה והתשובה הנכונה בלבד, בלי המסיחים — חלופה חסכונית בנייר לסעיף 8, עם אותן תשובות מאומתות ובאותו מספור. ברירת מחדל: לא מודפס — סמנו כאן ובטלו את סעיף 8 אם מעדיפים את התמצית.">
 </section>
 
+<section class=payload id=ps-compact50 data-num=13 data-icon="🧾" data-color="#4d7c0f" data-cols=2 data-q=official data-compact=1 data-range=q data-def=0
+  data-title="תמצית בוחן החזרה — שאלה ותשובה בלבד" data-short="תמצית 50"
+  data-desc="50 שאלות בוחן החזרה בגרסה דחוסה: השאלה והתשובה הרשמית בלבד — חלופה חסכונית בנייר לסעיף 9, באותו מספור. ברירת מחדל: לא מודפס — סמנו כאן ובטלו את סעיף 9 אם מעדיפים את התמצית.">
+</section>
+
 </div>
 
 <script>const DATA={{DATA}};const UPDATED="{{UPDATED}}";</script>
@@ -352,7 +357,7 @@ let P=0;
 
 function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-const TAB_TOP=n=>(14+(n-1)*23);
+const TAB_TOP=n=>(12+(n-1)*21);
 
 /* בחירת סעיפים (נשמרת מקומית) */
 let sel;
